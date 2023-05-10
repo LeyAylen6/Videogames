@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 const videogameModel = require('./models/Videogame');
-const genderModel = require('./models/Gender')
+const genderModel = require('./models/Gender');
 
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/videogames`, {
   logging: false, // set to console.log to see the raw SQL queries
@@ -32,8 +32,8 @@ sequelize.models = Object.fromEntries(capsEntries);
 // Para relacionarlos hacemos un destructuring
 const { Videogame, Gender } = sequelize.models;
 
-Videogame.belongsToMany(Gender, {through: 'videogame_gender'})
-Gender.belongsToMany(Videogame, {through: 'videogame_gender'})
+Videogame.belongsToMany(Gender, {through: 'videogame_gender', timestamps: false });
+Gender.belongsToMany(Videogame, {through: 'videogame_gender', timestamps: false });
 
 const { videogame_gender } = sequelize.models;
 

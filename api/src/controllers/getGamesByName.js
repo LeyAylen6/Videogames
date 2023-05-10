@@ -27,10 +27,11 @@ const getGamesByName = async(name) => {
     let savedGames = gamesFound.length
     
     // offset: 5, limit: 5
-    const response = await axios(`${URL_BASE}/games?search=${name}&page_size=${15-savedGames}&key=${KEY}`)
+    const { data } = await axios(`${URL_BASE}/games?search=${name}&page_size=${15-savedGames}&key=${KEY}`)
 
-    if(response.length < 1) throw new Error('No existe un video juego con el nombre solicitado')
-    return response.data
+    if(response.length < 1) throw new Error('No existe un videojuego con el nombre solicitado')
+
+    return data;
 }
 
 module.exports = { getGamesByName }

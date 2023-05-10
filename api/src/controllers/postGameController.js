@@ -1,8 +1,9 @@
 const { Videogame } = require('../db')
 const { videogame_gender } = require('../db')
+const { Gender } = require('../db')
 const { getAllGenres } = require('./getAllGenresController');
 
-const postGame = async(id, name, description, platform, image, releaseDate, rating, genres) => {
+const postGame = async(name, description, platform, image, releaseDate, rating, genres) => {
     // Esta ruta recibirá todos los datos necesarios para crear un videojuego y relacionarlo con sus géneros solicitados.
     // Toda la información debe ser recibida por body.
     // Debe crear un videojuego en la base de datos, y este debe estar relacionado con sus géneros indicados (al menos uno).
@@ -23,17 +24,22 @@ const postGame = async(id, name, description, platform, image, releaseDate, rati
 
     if (!create) throw new Error('El juego ya existe')
 
-    const getGenres = await getAllGenres();
+    let getAllGenres = await getAllGenres() 
+    getAllGenres = getAllGenres.filter(genre => genre.dataValues.name == genres)
 
-    // AQUÍ relacionar con sus géneros indicados
-    const [gameWithGender, created] = await videogame_gender.findOrCreate({
-        where: { GenderId: id, VideogameId: id }
+    if (getAllGenres.length == 0) throw new Error('El genero no existe')
+
+    // Relaciona con su genero
+    await videogame_gender.findOrCreate({
+        where: { GenderId: getGenreWithName[0].dataValues.id, VideogameId: game.id }
     })
 
-    // Buscar en los generos que hay el que tenga name == gender parametro. Reultiliza la func de get genders
+    const gameWithGender = await Videogame.findAll({ 
+        where: { id: game.id },
+        include: Gender
+    })
 
-
-    return game;
+    return gameWithGender;
 }
 
 module.exports = { postGame }

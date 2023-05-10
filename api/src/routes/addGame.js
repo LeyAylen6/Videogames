@@ -1,24 +1,23 @@
 const addGame = require('express').Router();
-const postGame = require('../controllers/postGameController')
+const { postGame } = require('../controllers/postGameController')
 
-addGame.post('/videogames', (req, res) => {
-    // Esta ruta recibirá todos los datos necesarios para crear un videojuego y relacionarlo con sus géneros solicitados.
-    // Toda la información debe ser recibida por body.
-    // Debe crear un videojuego en la base de datos, y este debe estar relacionado con sus géneros indicados (al menos uno).
-
+addGame.post('/videogames', async(req, res) => {
     try {
-        const { id, name, description, platform, image, releaseDate, rating, gender } = req.body
+        const { name, description, platform, image, releaseDate, rating, genre } = req.body
 
-        if (!id || !name || !description || !platform || !image || !releaseDate || !rating || !gender) {
+        if ( !name || !description || !platform || !image || !releaseDate || !rating || !genre) {
             throw new Error('Faltan datos')
         }
 
-        const addnewGame = postGame(id, name, description, platform, image, releaseDate, rating, gender)
+        const addnewGame = await postGame( name, description, platform, image, releaseDate, rating, genre)
     
         return res.status(201).json(addnewGame);
 
     } catch(error) {
-        res.status(400).send(error.message);
+        if (error.message == 'El genero no existe') {
+            return res.status(404).send(error.message);
+        }
+        return res.status(400).send(error.message);
     }
 }),
 

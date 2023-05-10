@@ -2,6 +2,7 @@ const { Videogame } = require('../db')
 const { Gender } = require('../db')
 const { getAllGames } = require('./getAllGamesController')
 const axios = require('axios');
+const { objectConstructor } = require('./../utils/objectConstructor')
 
 const getGameById = async(id) => {
     // Esta ruta obtiene el detalle de un videojuego específico. Es decir que devuelve un objeto con la información pedida en el detalle de un videojuego.
@@ -22,16 +23,7 @@ const getGameById = async(id) => {
 
     if (!data) throw new Error('No existe un juego con ese id')
 
-    return { 
-        id: data.id, 
-        name: data.name,
-        description: data.description,
-        platform: data.platforms,
-        image: data.image, //LA FOTO SE MURIO, NO HAY SRES
-        releaseDate: data.released,
-        rating: data.rating,
-        genre: data.genres
-    };
+    return objectConstructor(data)
 }
 
 module.exports = { getGameById }
