@@ -12,7 +12,7 @@ function App() {
         <Route path='/' element={<Landing />} />
         <Route path='/home' element={<Home />} />
         <Route path='/create' element={<Form />} />
-        <Route path='/detail/:id' element={<Detail />} /> // Ver despues
+        <Route path='/detail/:id' element={<Detail />} /> 
       </Routes> 
     </div>
   );
