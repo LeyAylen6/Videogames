@@ -1,52 +1,45 @@
 .formContainer {
-    /* right: 100px;
-    top: 150px;
-    width: 26%;
-    height: 70%; */
-    background-color: rgb(36, 200, 191);
+    /* right: 100px; */
+    /* top: 150px; */
+    width: 50%;
+    height: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: space-around;
     border-radius: 10px;
-    box-shadow: 2px 3px 15px black;
     padding-bottom: 15px;
-}
-
-@keyframes rotate {
-    0% {
-        
-        transform: rotateY(180deg);
-
-    } 100% {
-        transform: rotateY(0deg);
-    }
 }
 
 .formContainer > h1 {
     margin-top: 30px;
     font-size: 70px;
-    font-family: 'Creepster', cursive;
-    margin-bottom: 15px;
-}
-
-.label {
-    color: rgb(0, 0, 0);
-    font-size: 25px;
 }
 
 .inputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 70%;
-    height: 115px;
+    height: 80px;
+}
+
+.label {
+    font-size: 20px;
+    color: rgb(191, 191, 191);
 }
 
 .input {
-    height: 35px;
+    background-color: rgb(56, 56, 56);
+    border: none;
+    color: rgb(191, 191, 191);
+    height: 180px;
     width: 300px;
     border-radius: 7px;
     padding-left: 10px;
     font-size: 15px;
-    font-family: 'Poppins', sans-serif;
+    font-style: oblique;
+    
 }
 
 .errorContainer {
@@ -58,14 +51,33 @@
     color: red;
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    font-weight: bold;
 }
 
-.hr {
-    height: 1px;
-    width: 355px;
-    background-color: black;
-    border: none;
+.submitButton:hover{
+    background-color: yellow;
+    transition: 0.2s;
+    opacity: 1;
+}
+
+.selectForm {
+    width: 265px;
+}
+
+.checkboxContainer {
+    width: 600px;
+    height: 300px;
+    display: grid;
+    grid-template-columns: repeat(4, 150px);
+    background-color: rgb(86, 86, 86);
+}
+
+.labelCheckbox {
+    font-size: 20px;
+}
+
+.checkboxForm {
+    width: 20px;
+    height: 20px;
 }
 
 .submitButton{
@@ -78,10 +90,4 @@
     font-size: 17px;
     color: black;
     box-shadow: 2px 3px 1px black;
-}
-
-.submitButton:hover{
-    background-color: yellow;
-    transition: 0.2s;
-    opacity: 1;
 }

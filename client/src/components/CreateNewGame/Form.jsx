@@ -72,7 +72,7 @@ const Form = () => {
 
                 return (
                 <div className={styles.inputContainer} key={input.id}>
-
+                    
                     <label className={styles.label} htmlFor={input} >{input}</label>
                     <input className={styles.input} name={input} type={typesOfInputs(input)} onChange={handleChange} value={state[input]} placeholder={`write a ${input}`} ></input>                      
                     
@@ -84,21 +84,24 @@ const Form = () => {
                 )}
             )}
             
-            {/* <select onChange={''}> 
-            
-            {allPlatforms?.map (platform => <option value={state.platform} ky={platform.id} >{platform}</option> )}
+            <select onChange={''} className={styles.selectForm}> 
+                    
+            <option>Platform</option>
+            {/* {allPlatforms?.map (platform => <option value={state.platform} ky={platform.id} >{platform}</option> )} */}
 
-            </select> */}
+            </select>
             
+            <div className={styles.checkboxContainer}>
+                {allGenres?.map(genre => {
+                    return ( 
+                        <label key={genre.id} className={styles.labelCheckbox}>
+                            <input type="checkbox" value={genre.name} className={styles.checkboxForm}></input> 
+                            {genre.name}
+                        </label>
+                    )
+                })}
+            </div>
 
-            {/* {allGenres?.map(genre => {
-                return ( 
-                    <label key={genre.id}> {genre.name}
-                        <input type="checkbox" value={genre.name}></input> 
-                    </label>
-                )
-            })} */}
-            
             {/* disabled={} */}
             <button className={styles.submitButton} type='submit' > 
                 Create game

@@ -38,34 +38,36 @@ const Home = () => {
 
     return (
         <div className={style.homeContainer}>
-
-            <select value={state.order} name='order' onChange={onChange}>
-                <option value=''>Order by</option>
-                <option value='ascendent'>Ascendent</option>
-                <option value='descendent'>Descendent</option>
-                <option value='alfabetic'>Alphabetically</option>
-                <option value='rating'>Rating</option>
-            </select>
-
-            <h2>Filtrar por: </h2>
-            <select value={state.ubication} name='ubication' onChange={onChange}>
-                <option value=''>Ubicacion</option>
-                <option value='API'>API</option>
-                <option value='DB'>Data base</option>
-            </select>
-
-            <select value={state.genres} name='genres' onChange={onChange}>
-                <option value=''>Genres</option>
-
-                {allGenres?.map(genre => <option value={genre.name} >{genre.name}</option> )} 
             
-            </select>
+            <div className={style.cardsContainer}>
+                {allGamesFiltered?.map((game) => {
+                    return <GameCard game={game} key={game.id} /> })
+                }
+            </div>
+            
+            <div className={style.filtersContainer}>
+                <select value={state.order} name='order' onChange={onChange}>
+                    <option value=''>Order by</option>
+                    <option value='ascendent'>Ascendent</option>
+                    <option value='descendent'>Descendent</option>
+                    <option value='alfabetic'>Alphabetically</option>
+                    <option value='rating'>Rating</option>
+                </select>
 
-            {allGamesFiltered?.map((game) => {
-                return <GameCard game={game} key={game.id} /> })
-            }
+                {/* <h2>Filtrar por: </h2> */}
+                <select value={state.ubication} name='ubication' onChange={onChange}>
+                    <option value=''>Ubicacion</option>
+                    <option value='API'>API</option>
+                    <option value='DB'>Data base</option>
+                </select>
 
-            {/* PAGINADO --> 15 juegos por página SOLO obtener y paginar los primeros 100 videojuegos*/} 
+                <select value={state.genres} name='genres' onChange={onChange}>
+                    <option value=''>Genres</option>
+
+                    {allGenres?.map(genre => <option value={genre.name} >{genre.name}</option> )} 
+                
+                </select>
+            </div>
         </div>
     )
 }
