@@ -5,24 +5,24 @@ const axios = require('axios');
 const { objectConstructor } = require('./../utils/objectConstructor')
 
 const getGameById = async(id) => {
-    // Esta ruta obtiene el detalle de un videojuego específico. Es decir que devuelve un objeto con la información pedida en el detalle de un videojuego.
-    // El videojuego es recibido por parámetro (ID).
-    // Tiene que incluir los datos del género del videojuego al que está asociado.
-    // Debe funcionar tanto para los videojuegos de la API como para los de la base de datos.
+    
     const { URL_BASE, KEY } = process.env;
     
-    // Para juegos en la base de datos
-    const gameByDB = await Videogame.findOne({
-        where: { id: id },
-        include: Gender
-    })
+    // Necesitamos el if para que no busque en DB un tipo de dato que no existe como UUID
+    if (typeof(id) !== 'string' ) { 
+        const gameByDB = await Videogame.findOne({
+            where: { id: id },
+            include: Gender
+        })
+        
+        if(gameByDB) return gameByDB;
+        else throw new Error('No existe un juego con ese id')
+    }
 
-    if(gameByDB) return gameByDB;
-
-    const { data } = await axios(`${URL_BASE}/games/${id}?key=${KEY}`)
+    const { data } = await axios(`${URL_BASE}/games/${id}?key=${KEY}`) // ver xq es un string los id de la api
 
     if (!data) throw new Error('No existe un juego con ese id')
-
+    console.log(objectConstructor(data))
     return objectConstructor(data)
 }
 

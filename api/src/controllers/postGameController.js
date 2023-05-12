@@ -24,14 +24,14 @@ const postGame = async(name, description, platform, image, releaseDate, rating, 
 
     if (!create) throw new Error('El juego ya existe')
 
-    let getAllGenres = await getAllGenres() 
-    getAllGenres = getAllGenres.filter(genre => genre.dataValues.name == genres)
+    let allGenres = await getAllGenres() 
+    allGenres = allGenres.filter(genre => genre.dataValues.name == genres)
 
-    if (getAllGenres.length == 0) throw new Error('El genero no existe')
+    if (allGenres.length == 0) throw new Error('El genero no existe')
 
     // Relaciona con su genero
     await videogame_gender.findOrCreate({
-        where: { GenderId: getGenreWithName[0].dataValues.id, VideogameId: game.id }
+        where: { GenderId: allGenres[0].dataValues.id, VideogameId: game.id }
     })
 
     const gameWithGender = await Videogame.findAll({ 
