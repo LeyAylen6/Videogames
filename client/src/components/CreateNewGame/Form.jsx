@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGenres } from './../../redux/action'
 import { validation } from './../Validation/validation.js'
+import joystick from './../../assets/joystick.svg'
 
 // 📍 FORM PAGE |: Crear un nuevo videojuego.
 
@@ -66,46 +67,52 @@ const Form = () => {
 
     return (
         <form className={styles.formContainer}>
-            <h1>- Add a new game -</h1>
             
-            {inputs?.map(input => {
+            <div className={styles.left}> 
+                <h1>- Add a new game -</h1>
+                {inputs?.map(input => {
 
-                return (
-                <div className={styles.inputContainer} key={input.id}>
-                    
-                    <label className={styles.label} htmlFor={input} >{input}</label>
-                    <input className={styles.input} name={input} type={typesOfInputs(input)} onChange={handleChange} value={state[input]} placeholder={`write a ${input}`} ></input>                      
-                    
-                    <div className={styles.errorContainer} >
-                        {errors[input] ? <p className={styles.error}>{errors[input]}</p> : null}
+                    return (
+                    <div className={styles.inputContainer} key={input.id}>
+                        
+                        <label className={styles.label} htmlFor={input} >{input}</label>
+                        <input className={styles.input} name={input} type={typesOfInputs(input)} onChange={handleChange} value={state[input]} placeholder={`Write a ${input}`} ></input>                      
+                        
+                        <div className={styles.errorContainer} >
+                            {errors[input] ? <p className={styles.error}>{errors[input]}</p> : null}
+                        </div>
+                        
                     </div>
-                    
-                </div>
+                    )}
                 )}
-            )}
-            
-            <select onChange={''} className={styles.selectForm}> 
-                    
-            <option>Platform</option>
-            {/* {allPlatforms?.map (platform => <option value={state.platform} ky={platform.id} >{platform}</option> )} */}
+                
+                <select onChange={''} className={styles.selectForm}> 
+                        
+                <option>Platform</option>
+                {/* {allPlatforms?.map (platform => <option value={state.platform} ky={platform.id} >{platform}</option> )} */}
 
-            </select>
-            
-            <div className={styles.checkboxContainer}>
-                {allGenres?.map(genre => {
-                    return ( 
-                        <label key={genre.id} className={styles.labelCheckbox}>
-                            <input type="checkbox" value={genre.name} className={styles.checkboxForm}></input> 
-                            {genre.name}
-                        </label>
-                    )
-                })}
+                </select>
             </div>
 
-            {/* disabled={} */}
-            <button className={styles.submitButton} type='submit' > 
-                Create game
-            </button>
+            <div className={styles.right}> 
+
+                <img src={joystick} />
+                <div className={styles.checkboxContainer}>
+                    {allGenres?.map(genre => {
+                        return ( 
+                            <label key={genre.id} className={styles.labelCheckbox}>
+                                <input type="checkbox" value={genre.name} className={styles.checkboxForm}></input> 
+                                {genre.name}
+                            </label>
+                        )
+                    })}
+                </div>
+
+                {/* disabled={} */}
+                <button className={styles.submitButton} type='submit' > 
+                    Create game
+                </button>
+            </div>
         </form>
     )
 }
