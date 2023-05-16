@@ -1,0 +1,13 @@
+.background {
+    background-color: black;
+    opacity: 0.9;
+    width: 100%;
+    height: 100%;
+    z-index: 10000000;
+    position: absolute;
+}
+
+.error {
+    background-color: white;
+    color: black;
+}
