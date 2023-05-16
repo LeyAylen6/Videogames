@@ -1,17 +1,16 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllGames } from "../../redux/action";
 import GameCard from "../GameCard/GameCard"
 import style from './home.module.css'
-import { orderBy } from "../../redux/action";
+import { getAllGames, getAllGenres, orderBy, previousPage, nextPage } from "../../redux/action";
 import { useState } from "react";
-import { getAllGenres } from "../../redux/action";
 
 const Home = () => {
     const dispatch = useDispatch()
     const allGamesFiltered = useSelector(state => state.allGamesFiltered)
     const allGenres = useSelector(state => state.allGenres)
-    console.log(allGenres)
+    const page = useSelector(state => state.page)
+    const allGames = useSelector(state => state.allGames)
 
     let [state, setState] = useState({
         ubication: '',
@@ -34,6 +33,14 @@ const Home = () => {
             ...state,
             [event.target.name]: event.target.value
         }))
+    }
+
+    const onClickPrevious = () => {
+        previousPage(dispatch)
+    }
+    
+    const onClickNext = () => {
+        nextPage(dispatch)
     }
 
     return (
@@ -68,6 +75,13 @@ const Home = () => {
                 
                 </select>
             </div>
+
+            <div>
+                {page > 1 ? <button onClick={onClickPrevious} >Previous</button> : null}
+                <p>{page}</p>
+                {allGames[allGames.length-1]?.id != allGamesFiltered[allGamesFiltered.length-1]?.id ? <button onClick={onClickNext} >Next</button> : null}
+            </div>
+
         </div>
     )
 }

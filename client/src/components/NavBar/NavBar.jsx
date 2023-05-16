@@ -14,7 +14,7 @@ const NavBar = () => {
             <Link to='/create' className={styles.link} >
                 Add a game
             </Link>
-            <Link to={''} className={styles.link}>My games</Link>
+            <Link to={'/mygames'} className={styles.link}>My games</Link>
             <SearchBar />
             <Link to='/' className={styles.exitContainer}>
                 <img src={exit} className={styles.exit}/>

@@ -4,6 +4,10 @@
     color: rgb(0, 0, 0);
     display: flex;
     justify-content: center;
+    /* display: grid;
+    grid-template-columns: 70% 30%;
+    grid-template-rows: auto, 50px;
+    justify-items: center; */
 }
 
 .cardsContainer {
