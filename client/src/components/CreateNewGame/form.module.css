@@ -52,10 +52,37 @@
     height: 100%;
 }
 
-.error{
+.error {
     color: red;
-    margin: 0;
+    
     font-family: 'Poppins', sans-serif;
+}
+
+.ratingContainer > h2 {
+    color: rgb(191, 191, 191);
+}
+
+.rating {
+    direction: rtl;
+}
+
+.radio {
+    display: none;
+}
+
+.radio:checked ~ label{
+    color: orange;
+}
+
+.star{
+    color: grey;
+    font-size: 50px;
+    cursor: pointer;
+}
+
+.star:hover,
+.star:hover ~ label{
+    color: orange;
 }
 
 .right {
@@ -126,8 +153,17 @@
     box-shadow: 2px 3px 1px black;
 }
 
-.submitButton:hover{
+.submitButton:hover:not(:disabled){
     background-color: yellow;
     transition: 0.2s;
     opacity: 1;
 }
+
+button:disabled,
+    button[disabled] {
+        border: 1px solid black;
+        background-color: grey;
+        color: white;
+        padding: 15px;
+        cursor: not-allowed;
+    }
