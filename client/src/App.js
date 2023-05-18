@@ -9,9 +9,17 @@ import { useLocation } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
 import { useSelector } from 'react-redux';
 import Error from './components/Error/Error';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
   const message = useSelector(state => state.message)
+  const allGames = useSelector(state => state.allGames)
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(allGames.length < 1) navigate('/home')
+  }, [])
 
   return (
     <div className="App">

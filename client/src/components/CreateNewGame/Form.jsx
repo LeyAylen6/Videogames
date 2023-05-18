@@ -6,19 +6,6 @@ import { validation } from './../Validation/validation.js'
 import joystick from './../../assets/joystick.svg'
 import { postNewGame } from './../../redux/action';
 
-// 📍 FORM PAGE |: Crear un nuevo videojuego.
-
-// Nombre.
-// Imagen.
-// Descripción.
-// Plataformas.
-// Fecha de lanzamiento.
-// Rating.
-// Posibilidad de seleccionar/agregar varios géneros en simultáneo.
-// Botón para crear el nuevo videojuego.
-// [IMPORANTE]: Validaciones:
-// Por ejemplo: que el nombre del videojuego no pueda contener símbolos, o que el rating no pueda exceder determinado valor, etc.
-
 const Form = () => {
     const allGenres = useSelector(state => state.allGenres)
     const dispatch = useDispatch()
@@ -32,7 +19,7 @@ const Form = () => {
         releaseDate: '', 
         rating: 0, 
         platform: '',
-        genres: []
+        genre: []
     })
 
     let [errors, setErrors] = useState({});
@@ -42,14 +29,13 @@ const Form = () => {
         getAllPlatforms(dispatch);
     }, [])
 
-
     // Controla valores de los input y errores
     const handleChange = (event) => {
         if (event.target.type === 'checkbox') {
             if (event.target.checked) {
                 setState({
                     ...state,
-                    genres: [...state.genres, event.target.value]
+                    genre: [...state.genre, event.target.value]
                 }) 
             }
 
@@ -88,7 +74,7 @@ const Form = () => {
             releaseDate: '', 
             rating: 0, 
             platform: '',
-            genres: []
+            genre: []
         })
     }
 
@@ -145,9 +131,9 @@ const Form = () => {
                     </div>
                 </div>
                 
-                <select onChange={handleChange} className={styles.selectForm}> 
+                <select onChange={handleChange} name='platform' value={state.platform} className={styles.selectForm}> 
                         
-                    <option>Platform</option>
+                    <option value={''} >Platform</option>
 
                     {allPlatforms?.map((platform, index) => {
                         return <option value={platform} key={`platform-${index}`} >{platform}</option> 

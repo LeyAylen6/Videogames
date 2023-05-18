@@ -14,16 +14,11 @@ const MyGames = () => {
     return( 
         <div>
             {gamesCreate?.map(game => {
+                console.log(game)
                 return (
                     <GameCard 
-                        key={game.id} 
-                        name={game.name}
-                        image={game.image}
-                        description={game.description}
-                        releaseDate={game.releaseDate} 
-                        rating={game.rating}
-                        platform={game.platform}
-                        genres={game.genres}
+                        game={game} 
+                        key={game.id}
                     />
                 )
             })}
