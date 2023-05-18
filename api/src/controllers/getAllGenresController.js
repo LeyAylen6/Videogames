@@ -1,18 +1,18 @@
-const { Gender } = require('../db');
+const { Genre } = require('../db');
 const axios = require('axios');
 
 const getAllGenres = async() => {
     const { URL_BASE, KEY } = process.env;
     const { data } = await axios(`${URL_BASE}/genres?key=${KEY}`)
-    const gendersArray = data.results;
+    const genresArray = data.results;
 
-    const genresInDB = await Gender.findAll()
+    const genresInDB = await Genre.findAll()
 
-    if(genresInDB.length < 1) await Gender.bulkCreate(gendersArray, { fields: ['id', 'name'] });
+    if(genresInDB.length < 1) await Genre.bulkCreate(genresArray, { fields: ['id', 'name'] });
 
-    const newGenders = await Gender.findAll();
+    const newGenres = await Genre.findAll();
 
-    return newGenders;
+    return newGenres;
 }
 
 module.exports = { getAllGenres }

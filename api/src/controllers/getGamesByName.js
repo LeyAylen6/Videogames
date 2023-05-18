@@ -11,25 +11,9 @@ const { Op } = require("sequelize");
 const getGamesByName = async(name) => {
     const { URL_BASE, KEY } = process.env;
 
-    // const arr = name.split(' ')
-
-    // name = arr.map(string => {
-
-    //     let mayus = string[0].toUpperCase() 
-    //     let minusc = string.slice(1, string.length).toLowerCase()
-
-    //     return mayus + minusc
-    // });
-
-    
-        // var regex = new RegExp(`^${nombreRecibido}$,gi`)
-        // name.match(regex)
-
-        // 'javascript'.localeCompare('JavaScrpt')
-
     const gamesFound = await Videogame.findAll({
         where: { 
-            name: { [Op.like]: `%${name}%`} 
+            name: { [Op.iLike]: `%${name}%`} 
         },
         limit: 15
     })

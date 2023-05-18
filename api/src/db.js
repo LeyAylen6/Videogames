@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 const videogameModel = require('./models/Videogame');
-const genderModel = require('./models/Gender');
+const genreModel = require('./models/Genre');
 
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/videogames`, {
   logging: false, // set to console.log to see the raw SQL queries
@@ -12,7 +12,7 @@ const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}
 });
 const basename = path.basename(__filename);
 
-const modelDefiners = [videogameModel, genderModel];
+const modelDefiners = [videogameModel, genreModel];
 
 // Leemos todos los archivos de la carpeta Models, los requerimos y agregamos al arreglo modelDefiners
 fs.readdirSync(path.join(__dirname, '/models'))
@@ -30,17 +30,17 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Videogame, Gender } = sequelize.models;
+const { Videogame, Genre } = sequelize.models;
 
-Videogame.belongsToMany(Gender, {through: 'videogame_gender', timestamps: false });
-Gender.belongsToMany(Videogame, {through: 'videogame_gender', timestamps: false });
+Videogame.belongsToMany(Genre, {through: 'videogame_genre', timestamps: false });
+Genre.belongsToMany(Videogame, {through: 'videogame_genre', timestamps: false });
 
-const { videogame_gender } = sequelize.models;
+const { videogame_genre } = sequelize.models;
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize,     // para importart la conexión { conn } = require('./db.js');
   Videogame,
-  Gender,
-  videogame_gender
+  Genre,
+  videogame_genre
 };

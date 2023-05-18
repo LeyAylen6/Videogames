@@ -6,6 +6,8 @@ const getGames = require('./routes/getGames.js');
 const getGamesById = require('./routes/getGamesById.js');
 const addGame = require('./routes/addGame.js');
 const getGenres = require('./routes/getGenres.js');
+const updateGame = require('./routes/updateGame.js');
+const deleteGame = require('./routes/deleteGame.js');
 
 require('./db.js');
 
@@ -26,10 +28,12 @@ server.use((req, res, next) => {
   next();
 });
 
-server.use('/', getGames) // ? Obtiene x query=name o trae todos
+server.use('/', getGames) // ? Si Obtiene query=name trae x name sino trae todos
 server.use('/', getGamesById)
 server.use('/', addGame)
 server.use('/', getGenres)
+server.use('/', updateGame)
+server.use('/', deleteGame)
 
 // Error catching endware.
 server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars

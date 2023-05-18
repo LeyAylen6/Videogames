@@ -5,7 +5,7 @@ addGame.post('/videogames', async(req, res) => {
     try {
         const { name, description, platform, image, releaseDate, rating, genre } = req.body
 
-        if ( !name || !description || !platform || !image || !releaseDate || !rating || !genre) {
+        if ( !name || !description || !platform || !rating || !genre) { // image tiene valor por default
             throw new Error('Faltan datos')
         }
 

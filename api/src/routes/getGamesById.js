@@ -10,10 +10,7 @@ getGamesById.get('/videogames/:idVideogame', async(req, res) => {
         return res.status(200).json(getbyId);
 
     } catch(error) {
-        if (error.message == 'No existe un juego con ese id') {
-            return res.status(404).send(error.message)
-        }
-        return res.status(500).send(error.message)
+        return res.status(404).send('No existe un juego con ese id')
     }
     
 

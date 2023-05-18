@@ -1,6 +1,5 @@
-const { Videogame } = require('../db')
-const { videogame_gender } = require('../db')
-const { Gender } = require('../db')
+const { Videogame, Genre } = require('../db')
+const { videogame_genre } = require('../db')
 const { getAllGenres } = require('./getAllGenresController');
 
 const postGame = async(name, description, platform, image, releaseDate, rating, genres) => {
@@ -11,35 +10,42 @@ const postGame = async(name, description, platform, image, releaseDate, rating, 
     let newGame = {
         name: name,
         description: description,
-        platform: platform,
-        image: image,
-        releaseDate: releaseDate,
-        rating: rating
+        platform: platform
     }
+
+    if (image) newGame.image = image
+    if (releaseDate) newGame.releaseDate = releaseDate
+    if (rating) newGame.rating = rating
 
     const [game, create] = await Videogame.findOrCreate({
         where: newGame,
-        default: newGame
+        default: newGame 
     })
 
     if (!create) throw new Error('El juego ya existe')
 
     let allGenres = await getAllGenres() 
-    allGenres = allGenres.filter(genre => genre.dataValues.name == genres)
+    
+    allGenres = allGenres.filter(genre => {
+        for (let i = 0; i < genres.length; i++) {
+            if(genre.dataValues.name == genres[i]) return true;
+        }
+        return false;
+    })
 
     if (allGenres.length == 0) throw new Error('El genero no existe')
 
     // Relaciona con su genero
-    await videogame_gender.findOrCreate({
-        where: { GenderId: allGenres[0].dataValues.id, VideogameId: game.id }
+    await videogame_genre.findOrCreate({
+        where: { GenreId: allGenres[0].dataValues.id, VideogameId: game.id }
     })
 
-    const gameWithGender = await Videogame.findAll({ 
+    const gameWithGenre = await Videogame.findOne({ 
         where: { id: game.id },
-        include: Gender
+        include: Genre
     })
 
-    return gameWithGender;
+    return gameWithGenre;
 }
 
 module.exports = { postGame }
