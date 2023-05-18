@@ -1,13 +1,28 @@
-import { GET_ALL_GAMES, GET_GENRES, ORDER, POST_GAME, GET_PLATFORMS, MESSAGE, CLEAR, GAMES_CREATED, PREVIOUS, NEXT } from './action';
+import { 
+    GET_ALL_GAMES, 
+    GET_GENRES, 
+    GET_GAMES_BY_NAME,
+    ORDER, 
+    POST_GAME, 
+    GET_DETAIL, 
+    GET_PLATFORMS, 
+    MESSAGE, 
+    CLEAR, 
+    GAMES_CREATED, 
+    CLEAR_STATE 
+} from './action';
 
 let initialState = {
     allGames: [],
     allGamesFiltered: [],
     allGenres: [],
     gamesCreate: [],
+    gameDetail: {},
     allPlatforms: [],
+    gamesByName: [],
     message: '',
     page: 1,
+    nextPage: true
 };
 
 export const rootReducer = (state = initialState, { type, payload }) => {
@@ -16,7 +31,6 @@ export const rootReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 allGames: payload,
-                // allGamesFiltered: payload
                 allGamesFiltered: [...payload].slice(0, 15)
             }
 
@@ -30,7 +44,19 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         case POST_GAME:
             return {
                 ...state,
-                allGames: [payload, state.allGames]
+                allGames: [payload, ...state.allGames]
+            }
+
+        case GAMES_CREATED: 
+            return {
+                ...state,
+                gamesCreate: [...state.allGames].filter(game => typeof(game.id) !== 'number')
+            }
+
+        case GET_DETAIL:
+            return {
+                ...state,
+                gameDetail: payload
             }
 
         case GET_PLATFORMS:
@@ -50,73 +76,93 @@ export const rootReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 allPlatforms: platformsFound,
             }
-        
-        case ORDER: 
-            let ordering 
 
-            switch(payload.order) {
-                case 'ascendent':
-                    ordering = [...state.allGames].sort((a, b) => a.id - b.id)
-                    break
-
-                case 'descendent':
-                    ordering = [...state.allGames].sort((a, b) => b.id - a.id)
-                    break
-
-                case 'alfabetic':
-                    ordering = [...state.allGames].sort((a,b) => a.name > b.name ? 1 : -1)
-                    break
-
-                case 'rating':
-                    ordering = [...state.allGames].sort((a, b) => b.rating - a.rating)
-                    break
-
-                default:
-                    ordering = state.allGames
-                    break
-            }
-
-            switch(payload.ubication) {
-
-                case 'API':
-                    ordering = ordering.filter(game => typeof(game.id) == 'number')
-                    break
-
-                case 'DB':
-                    ordering = ordering.filter(game => typeof(game.id) !== 'number')
-                    break
-
-                default:
-                    break
-            }   
-
-            switch(payload.genres) {
-
-                case '':
-                    break
-
-                default:
-                    ordering = ordering.filter(game => {   // game -> genre -> array[i] (uno de sus generos) -> name de genre -//- (game.genre[i].name)
-                        for(let i = 0; i < game.genres.length; i++) {
-                            if (game.genres[i].name == payload.genres) {
-                                return true;  
-                            }  
-                        }
-                        return false; 
-                    });
-                    break
-            }   
-
-            return {
-                ...state,
-                allGamesFiltered: ordering
-            }
-
-            case GAMES_CREATED: 
+            case GET_GAMES_BY_NAME:
                 return {
                     ...state,
-                    gamesCreate: [...state.allGames].filter(game => typeof(game.id) !== 'number')
+                    gamesByName: payload
                 }
+
+            case ORDER: 
+
+                let ordering 
+                let actualPage = state.page
+
+                switch(payload.order) {
+                    
+                    case 'ascendent':
+                        ordering = [...state.allGames].sort((a, b) => a.id - b.id)
+                        break
+
+                    case 'descendent':
+                        ordering = [...state.allGames].sort((a, b) => b.id - a.id)
+                        break
+
+                    case 'alfabetic':
+                        ordering = [...state.allGames].sort((a,b) => a.name > b.name ? 1 : -1)
+                        break
+
+                    case 'rating':
+                        ordering = [...state.allGames].sort((a, b) => b.rating - a.rating)
+                        break
+
+                    default:
+                        ordering = state.allGames
+                        break
+                }
+
+                switch(payload.ubication) {
+
+                    case 'API':
+                        ordering = ordering.filter(game => typeof(game.id) == 'number')
+                        break
+
+                    case 'DB':
+                        ordering = ordering.filter(game => typeof(game.id) !== 'number')
+                        break
+
+                    default:
+                        break
+                }   
+
+                switch(payload.genres) {
+
+                    case '':
+                        break
+
+                    default:
+                        ordering = ordering.filter(game => {   // game -> genre -> array[i] (uno de sus generos) -> name de genre -//- (game.genre[i].name)
+                            for(let i = 0; i < game.genres.length; i++) {
+                                if (game.genres[i].name == payload.genres) {
+                                    return true;  
+                                }  
+                            }
+                            return false; 
+                        });
+                        break
+                }  
+
+                // ! PAGINADO 
+
+                if (payload.prev === 'true' && actualPage > 1) actualPage = actualPage - 1;
+
+                else if (payload.next === 'true') actualPage = actualPage + 1;
+
+                else actualPage = 1;
+
+                let skip = ((actualPage - 1) * 15);
+                let next = actualPage * 15
+
+                let nextpage = ordering.slice(((actualPage) * 15), ((actualPage + 1) * 15)).length > 0
+
+                ordering = ordering.slice(skip, next)
+            
+            return {
+                ...state,
+                nextPage: nextpage,
+                page: actualPage,
+                allGamesFiltered: ordering
+            }
 
             case MESSAGE:
                 return {
@@ -130,35 +176,10 @@ export const rootReducer = (state = initialState, { type, payload }) => {
                     message: ''
                 }
 
-            case NEXT: 
-                let actualPage = state.page + 1
-                let skip = ((actualPage - 1) * 15);
-                let next = actualPage * 15
-
-                let result = [...state.allGames].slice(skip, next)
-
-                if (result[result.length - 1] === state.allGames[result.length - 1]) {
-                    break
-                }
-
+            case CLEAR_STATE:
                 return {
                     ...state,
-                    page: actualPage,
-                    allGamesFiltered: result
-                }
-
-            case PREVIOUS:
-                let actualPagePrev = state.page;
-
-                if(actualPagePrev > 1) actualPagePrev = state.page - 1
-
-                let skipPrevious = ((actualPagePrev - 1) * 15);
-
-
-                return {
-                    ...state,
-                    page: actualPagePrev,
-                    allGamesFiltered: [...state.allGames].slice(skipPrevious, (actualPagePrev) * 15),
+                    gameDetail: {}
                 }
 
             default:

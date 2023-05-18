@@ -2,45 +2,46 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import GameCard from "../GameCard/GameCard"
 import style from './home.module.css'
-import { getAllGames, getAllGenres, orderBy, previousPage, nextPage } from "../../redux/action";
+import { getAllGames, getAllGenres, orderBy } from "../../redux/action";
 import { useState } from "react";
 
 const Home = () => {
     const dispatch = useDispatch()
-    const allGamesFiltered = useSelector(state => state.allGamesFiltered)
-    const allGenres = useSelector(state => state.allGenres)
-    const page = useSelector(state => state.page)
-    const allGames = useSelector(state => state.allGames)
+    const { allGamesFiltered, allGenres, page, allGames, nextPage } = useSelector(state => state)
 
     let [state, setState] = useState({
         ubication: '',
         order: '',
-        genres: ''
+        genres: '',
+        prev: '',
+        next: ''
     })
 
     useEffect(() => {
-        getAllGames(dispatch)
-        getAllGenres(dispatch)
+        if (allGames.length == 0) {
+            getAllGames(dispatch)
+            getAllGenres(dispatch)
+        }
     },[])
 
     const onChange = (event) => {
         setState({
             ...state,
-            [event.target.name]: event.target.value,
+            [event.target.name]: event.target.value
         })
 
         dispatch(orderBy({
             ...state,
             [event.target.name]: event.target.value
         }))
-    }
 
-    const onClickPrevious = () => {
-        previousPage(dispatch)
-    }
-    
-    const onClickNext = () => {
-        nextPage(dispatch)
+        setState({
+            ...state,
+            
+            [event.target.name]: event.target.value,
+            prev: false,
+            next: false,
+        })
     }
 
     return (
@@ -77,9 +78,9 @@ const Home = () => {
             </div>
 
             <div>
-                {page > 1 ? <button onClick={onClickPrevious} >Previous</button> : null}
+                {page > 1 ? <button name='prev' value='true' onClick={onChange} >Previous</button> : null}
                 <p>{page}</p>
-                {allGames[allGames.length-1]?.id != allGamesFiltered[allGamesFiltered.length-1]?.id ? <button onClick={onClickNext} >Next</button> : null}
+                {nextPage ? <button name='next' value='true' onClick={onChange} >Next</button> : null}
             </div>
 
         </div>
