@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const GET_ALL_GAMES = 'GET_ALL_GAMES';
+export const RESTORE_ALL_GAMES = 'RESTORE_ALL_GAMES';
 export const ORDER = 'ORDER'
 export const GET_GAMES_BY_NAME = 'GET_GAMES_BY_NAME';
 export const GET_GENRES = 'GET_GENRES';
@@ -11,6 +12,7 @@ export const MESSAGE = 'MESSAGE';
 export const CLEAR = 'CLEAR';
 export const GAMES_CREATED = 'GAMES_CREATED';
 export const CLEAR_STATE = 'CLEAR_STATE';
+export const CLEAR_GAMES_BY_NAME = 'CLEAR_GAMES_BY_NAME';
 
 export const getAllGames = async(dispatch) => {
     try {
@@ -19,6 +21,15 @@ export const getAllGames = async(dispatch) => {
     
     } catch(error) {
         dispatch({ type: MESSAGE, payload: error.response.data})
+    }
+}
+
+export const restoreAllGames = (dispatch) => {
+    try {
+        dispatch({ type: RESTORE_ALL_GAMES })
+    
+    } catch(error) {
+        dispatch({ type: MESSAGE, payload: error.message})
     }
 }
 
@@ -62,6 +73,7 @@ export const postNewGame = async(game, dispatch) => {
 
 export const getDetail = async(id, dispatch) => {
     const { data } = await axios(`http://localhost:3001/videogames/${id}`)
+    console.log(data)
     dispatch({ type: GET_DETAIL , payload: data })
 }
 
@@ -79,6 +91,10 @@ export const getMyGames = (dispatch) => {
 
 export const clearState = (dispatch) => {
     dispatch({ type: CLEAR_STATE })
+}
+
+export const clearGamesByName = (dispatch) => {
+    dispatch({ type: CLEAR_GAMES_BY_NAME })
 }
 
 

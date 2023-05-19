@@ -1,5 +1,6 @@
 import { 
     GET_ALL_GAMES, 
+    RESTORE_ALL_GAMES,
     GET_GENRES, 
     GET_GAMES_BY_NAME,
     ORDER, 
@@ -9,7 +10,8 @@ import {
     MESSAGE, 
     CLEAR, 
     GAMES_CREATED, 
-    CLEAR_STATE 
+    CLEAR_STATE,
+    CLEAR_GAMES_BY_NAME
 } from './action';
 
 let initialState = {
@@ -34,8 +36,13 @@ export const rootReducer = (state = initialState, { type, payload }) => {
                 allGamesFiltered: [...payload].slice(0, 15)
             }
 
-        case GET_GENRES: 
+        case RESTORE_ALL_GAMES:
+            return {
+                ...state,
+                allGamesFiltered: [...state.allGames].slice(0, 15)
+            }
 
+        case GET_GENRES: 
             return {
                 ...state,
                 allGenres: payload,
@@ -180,6 +187,12 @@ export const rootReducer = (state = initialState, { type, payload }) => {
                 return {
                     ...state,
                     gameDetail: {}
+                }
+
+            case CLEAR_GAMES_BY_NAME:
+                return {
+                    ...state,
+                    gamesByName: []
                 }
 
             default:

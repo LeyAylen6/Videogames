@@ -2,19 +2,20 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import GameCard from "../GameCard/GameCard"
 import style from './home.module.css'
-import { getAllGames, getAllGenres, orderBy } from "../../redux/action";
+import { getAllGames, getAllGenres, clearGamesByName, orderBy, restoreAllGames } from "../../redux/action";
 import { useState } from "react";
 
 const Home = () => {
     const dispatch = useDispatch()
-    const { allGamesFiltered, allGenres, page, allGames, nextPage } = useSelector(state => state)
+    const { allGamesFiltered, gamesByName, allGenres , page, allGames, nextPage } = useSelector(state => state)
 
     let [state, setState] = useState({
         ubication: '',
         order: '',
         genres: '',
         prev: '',
-        next: ''
+        next: '',
+        allGames: true
     })
 
     useEffect(() => {
@@ -22,7 +23,10 @@ const Home = () => {
             getAllGames(dispatch)
             getAllGenres(dispatch)
         }
-    },[])
+
+        if (gamesByName.length != 0) setState({...state, allGames: false})
+
+    },[gamesByName])
 
     const onChange = (event) => {
         setState({
@@ -37,51 +41,80 @@ const Home = () => {
 
         setState({
             ...state,
-            
             [event.target.name]: event.target.value,
             prev: false,
             next: false,
         })
     }
 
+    const onClick = () => {
+        restoreAllGames(dispatch)
+        setState({
+            ...state,
+            allGames: true
+        })
+        clearGamesByName(dispatch)
+    }
+
     return (
         <div className={style.homeContainer}>
             
-            <div className={style.cardsContainer}>
-                {allGamesFiltered?.map((game) => {
-                    return <GameCard game={game} key={game.id} /> })
-                }
-            </div>
-            
-            <div className={style.filtersContainer}>
-                <select value={state.order} name='order' onChange={onChange}>
-                    <option value=''>Order by</option>
-                    <option value='ascendent'>Ascendent</option>
-                    <option value='descendent'>Descendent</option>
-                    <option value='alfabetic'>Alphabetically</option>
-                    <option value='rating'>Rating</option>
-                </select>
-
-                {/* <h2>Filtrar por: </h2> */}
-                <select value={state.ubication} name='ubication' onChange={onChange}>
-                    <option value=''>Ubicacion</option>
-                    <option value='API'>API</option>
-                    <option value='DB'>Data base</option>
-                </select>
-
-                <select value={state.genres} name='genres' onChange={onChange}>
-                    <option value=''>Genres</option>
-
-                    {allGenres?.map(genre => <option value={genre.name} >{genre.name}</option> )} 
+            {/* <h1>Los géneros mas populares</h1> */}
+            <section>
+                {/* <div className={style.genresContainer}> 
+                    {allGenres?.map((genre) => {
+                        return <p className={style.genreCard}key={genre.id}>{genre.name}</p> 
+                        })
+                    }
+                </div> */}
                 
-                </select>
-            </div>
+                
+                <div className={style.cardsContainer} >
+                    {(state.allGames ? allGamesFiltered : gamesByName).map((game) => {
+                        return <GameCard game={game} key={game.id} /> 
+                        })
+                    }
+                </div>
+                
+                {state.allGames && 
+                    <div>
+                        {page > 1 ? <button name='prev' value='true' onClick={onChange} >Previous</button> : null}
+                        <p>{page}</p>
+                        {nextPage ? <button name='next' value='true' onClick={onChange} >Next</button> : null}
+                    </div>
+                }
 
-            <div>
-                {page > 1 ? <button name='prev' value='true' onClick={onChange} >Previous</button> : null}
-                <p>{page}</p>
-                {nextPage ? <button name='next' value='true' onClick={onChange} >Next</button> : null}
-            </div>
+            </section>
+
+            <section className={style.filtersContainer}>
+                <button onClick={onClick} >Todos los juegos</button>
+
+                {state.allGames && 
+                    <div className={style.filters}>
+                        <select value={state.order} name='order' onChange={onChange}>
+                            <option value=''>Order by</option>
+                            <option value='ascendent'>Ascendent</option>
+                            <option value='descendent'>Descendent</option>
+                            <option value='alfabetic'>Alphabetically</option>
+                            <option value='rating'>Rating</option>
+                        </select>
+
+                        <select value={state.ubication} name='ubication' onChange={onChange}>
+                            <option value=''>Ubicacion</option>
+                            <option value='API'>API</option>
+                            <option value='DB'>Data base</option>
+                        </select>
+
+                        <select value={state.genres} name='genres' onChange={onChange}>
+                            <option value=''>Genres</option>
+
+                            {allGenres?.map(genre => <option value={genre.name} >{genre.name}</option> )} 
+                        
+                        </select>
+                    </div>
+                }
+
+            </section>
 
         </div>
     )
