@@ -18,7 +18,7 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(allGames.length < 1) navigate('/home')
+    if(allGames.length < 1) navigate('/')
   }, [])
 
   return (
