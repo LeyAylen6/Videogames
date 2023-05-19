@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import GameCard from "../GameCard/GameCard";
 import { useEffect } from "react";
 import { getMyGames } from "../../redux/action";
+import styles from './myGames.module.css'
 
 const MyGames = () => {
     const gamesCreate = useSelector(state => state.gamesCreate);
@@ -12,7 +13,7 @@ const MyGames = () => {
     }, []);
 
     return( 
-        <div>
+        <div className={styles.myGamesContainer}>
             {gamesCreate?.map(game => {
                 console.log(game)
                 return (

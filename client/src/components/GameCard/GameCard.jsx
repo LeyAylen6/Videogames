@@ -11,7 +11,6 @@ const GameCard = (props) => {
 
             <Link to={`/detail/${props.game.id}`} className={styles.linkName}>
                 <h1 className={styles.name}>{props.game.name}</h1>
-                {/* <h2>Géneros: {props.game.genre} </h2> */}
             </Link>
 
             <div className={styles.genresContainer}>

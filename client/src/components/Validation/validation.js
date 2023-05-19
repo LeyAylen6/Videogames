@@ -24,11 +24,6 @@ export const validation = (gameData) => {
     if (!gameData.description) errors.description = 'The field cannot be empty'
         
     else if (!regexNotSimbols.test(gameData.description)) errors.description = "The description can't contain simbols"
-       
-
-    // // ! Validación releaseDate
-    // if(!gameData.releaseDate) errors.releaseDate = 'The field cannot be empty'
-
 
     // ! Validación rating
     if(!gameData.releaseDate) errors.releaseDate = 'The rating cannot be 0'

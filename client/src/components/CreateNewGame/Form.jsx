@@ -145,6 +145,8 @@ const Form = () => {
             <div className={styles.right}> 
 
                 <img src={joystick} />
+                <h2>What genre does the game belong to?</h2>
+
                 <div className={styles.checkboxContainer}>
                     {allGenres?.map(genre => {
                         return ( 
@@ -162,14 +164,16 @@ const Form = () => {
                         )
                     })}
                 </div>
-
-                <button 
-                    className={styles.submitButton} 
-                    type='submit' 
-                    disabled= { Object.values(errors).length != 0 }
-                    > Create game
-                </button>
             </div>
+
+            <button 
+                className={styles.submitButton} 
+                type='submit' 
+                disabled= { Object.values(errors).length != 0 }
+                >
+                    <span className={styles.text}>Create game</span>
+            </button>
+
         </form>
     )
 }
