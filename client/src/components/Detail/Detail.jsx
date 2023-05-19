@@ -20,14 +20,29 @@ const Detail = () => {
     }, []);
 
     return( 
-        <div classname={styles.detailContainer}>
-            {name ? <h2>{name}</h2> : null}
-            {image ? <img src={image} alt={name} /> : null}
-            {Description ? <h2>{Description}</h2> : null}
-            {platforms ? <ul>Platforms: {platforms.map(platform => <li key={platform.id}>{platform.name}</li>)}</ul> : null }
-            {releaseDate ? <h2>{releaseDate}</h2> : null}
-            {rating ? <h2>{rating}</h2> : null}
-            {genres ? <ul>Genres: {genres.map(genre => <li key={genre.id}>{genre.name}</li>)}</ul> : null }
+        <div className={styles.detail}>
+            <section className={styles.left}>
+                <div className={styles.imageContainer}>
+                    {image ? <img className={styles.image} src={image} alt={name} /> : null}
+                </div>
+                <h2>Description:</h2> {Description ? <h2>Description: {Description}</h2> : null}
+            </section>
+
+            <section className={styles.right} >
+                {name ? <h1 className={styles.name}>{name}</h1> : null}
+
+                <h2>Platforms: </h2>
+                {platforms ? <div className={styles.miniCards}>{platforms.map(platform => <p className={styles.map} key={platform.id}>{platform.name}</p>)}</div> : null }
+                <hr />
+                {releaseDate ? <h2>Release Date: {releaseDate}</h2> : null}
+                <hr />
+                {rating ? <h2>Rating: {rating}</h2> : null}
+                <hr />
+                <h2>Genres: </h2>
+                {genres ? <div className={styles.miniCards}>{genres.map(genre => <p className={styles.map} key={genre.id}>{genre.name}</p>)}</div> : null }
+            
+            </section>
+
         </div>
 )}
 
