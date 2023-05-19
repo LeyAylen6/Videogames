@@ -13,7 +13,7 @@ const getAllGames = async() => {
         count ++
     }
      // Paginado desde back. page_size=15
-    
+    console.log( dataFound)
     return dataFound.map(game => objectConstructor(game)); 
 };
 
