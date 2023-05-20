@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
       require: true,
     },
 
-    platform: {
+    platforms: {
       type: DataTypes.STRING, // Ver que hay
       allowNull: true,
       require: true,

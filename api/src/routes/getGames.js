@@ -17,7 +17,6 @@ getGames.get('/videogames', async(req, res) => {
         return res.status(200).json(getGames)
     
     } catch(error) {
-        console.log(error.message)
         if( error.message === 'No existe un video juego con el nombre solicitado') {
             return res.status(404).send(error.message);
         }

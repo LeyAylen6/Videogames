@@ -3,13 +3,13 @@ const { postGame } = require('../controllers/postGameController')
 
 addGame.post('/videogames', async(req, res) => {
     try {
-        const { name, description, platform, image, releaseDate, rating, genre } = req.body
+        const { name, description, platforms, image, releaseDate, rating, genre } = req.body
 
-        if ( !name || !description || !platform || !rating || !genre) { // image tiene valor por default
+        if ( !name || !description || !platforms || !rating || !genre) { // image tiene valor por default
             throw new Error('Faltan datos')
         }
 
-        const addnewGame = await postGame( name, description, platform, image, releaseDate, rating, genre)
+        const addnewGame = await postGame( name, description, platforms, image, releaseDate, rating, genre)
     
         return res.status(201).json(addnewGame);
 
