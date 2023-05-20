@@ -109,6 +109,7 @@ export const deleteGame = async(id, dispatch) => {
         console.log('SOY RESPONSE', response)
         if (response.status === 200) {
             dispatch({ type: DELETE_GAME, payload: id })
+            dispatch({ type: MESSAGE, payload: 'Successfully removed!' })
         }
     
     } catch(error) {
@@ -121,8 +122,8 @@ export const updateGame = async(game, dispatch) => {
         const { data } = await axios.put(`http://localhost:3001/videogames/${game.id}`, game)
         console.log(data)
         dispatch({ type: UPDATE_GAME, payload: data })
+        dispatch({ type: MESSAGE, payload: 'Successfully updated!' })
        
-    
     } catch(error) {
         console.log(error)
         dispatch({ type: MESSAGE, payload: error})

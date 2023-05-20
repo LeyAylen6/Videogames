@@ -48,13 +48,13 @@ const updateGame = async(id, game) => {
         })
     })
 
-    const gameByDB2 = await Videogame.findOne({
+    let gameByDB2 = await Videogame.findOne({
         where: { id: id },
         include: Genre
     })
 
-    gameByDB2 = {...gameByDB2, platforms: [gameByDB2.platforms]}
-    
+    // gameByDB2 = {...gameByDB2, platforms: [gameByDB2.platforms]}
+    console.log(gameByDB2)
     return gameByDB2;
 }
 

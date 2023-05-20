@@ -25,14 +25,14 @@ const Detail = () => {
                 <div className={styles.imageContainer}>
                     {image ? <img className={styles.image} src={image} alt={name} /> : null}
                 </div>
-                <h2>Description:</h2> {Description ? <h2>Description: {Description}</h2> : null}
+                {Description ? <h2>Description: {Description}</h2> : null}
             </section>
 
             <section className={styles.right} >
                 {name ? <h1 className={styles.name}>{name}</h1> : null}
 
                 <h2>Platforms: </h2>
-                {platforms ? <div className={styles.miniCards}>{platforms.map(platform => <p className={styles.map} key={platform.id}>{platform.name}</p>)}</div> : null }
+                {platforms && Array.isArray(platforms) ? <div className={styles.miniCards}>{platforms.map(platform => <p className={styles.map} key={platform.id}>{platform.name}</p>)}</div> : null }
                 <hr />
                 {releaseDate ? <h2>Release Date: {releaseDate}</h2> : null}
                 <hr />

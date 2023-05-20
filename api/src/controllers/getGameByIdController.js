@@ -11,6 +11,7 @@ const getGameById = async(id) => {
             where: { id: id },
             include: Genre
         })
+        
         return gameByDB;
 
     } catch(error) {
