@@ -31,7 +31,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Landing />} />
           <Route path='/home' element={<Home />} />
-          <Route path='/create' element={<Form />} />
+          <Route path='/create' element={<Form create={true} />} />
+          <Route path='/update/:id' element={<Form create={false}/>} />
           <Route path='/detail/:id' element={<Detail />} /> 
           <Route path='/mygames' element={<MyGames />} /> 
         </Routes> 

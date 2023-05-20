@@ -13,6 +13,8 @@ export const CLEAR = 'CLEAR';
 export const GAMES_CREATED = 'GAMES_CREATED';
 export const CLEAR_STATE = 'CLEAR_STATE';
 export const CLEAR_GAMES_BY_NAME = 'CLEAR_GAMES_BY_NAME';
+export const DELETE_GAME = 'DELETE_GAME';
+export const UPDATE_GAME = 'UPDATE_GAME';
 
 export const getAllGames = async(dispatch) => {
     try {
@@ -47,6 +49,7 @@ export const getAllGenres = async(dispatch) => {
     try {
         const { data } = await axios(`http://localhost:3001/genres`)
         dispatch({ type: GET_GENRES, payload: data })
+        
     } catch(error) {
         dispatch({ type: MESSAGE, payload: error.response.data})
     }
@@ -56,6 +59,7 @@ export const getGamesByName = async(name, dispatch) => {
     try {
         const { data } = await axios(`http://localhost:3001/videogames?name=${name}`)
         dispatch({ type: GET_GAMES_BY_NAME, payload: data })
+
     } catch(error) {
         dispatch({ type: MESSAGE, payload: error.response.data})
     }
@@ -66,6 +70,8 @@ export const postNewGame = async(game, dispatch) => {
         const { data } = await axios.post(`http://localhost:3001/videogames`, game)
         dispatch({ type: POST_GAME, payload: data })    // Respuesta respecto al post
         dispatch({ type: MESSAGE, payload: 'Successfully created!' })
+        console.log(data)
+
     } catch(error) {
         dispatch({ type: MESSAGE, payload: error.response.data})
     }
@@ -73,7 +79,6 @@ export const postNewGame = async(game, dispatch) => {
 
 export const getDetail = async(id, dispatch) => {
     const { data } = await axios(`http://localhost:3001/videogames/${id}`)
-    console.log(data)
     dispatch({ type: GET_DETAIL , payload: data })
 }
 
@@ -96,5 +101,37 @@ export const clearState = (dispatch) => {
 export const clearGamesByName = (dispatch) => {
     dispatch({ type: CLEAR_GAMES_BY_NAME })
 }
+
+export const deleteGame = async(id, dispatch) => {
+    try {
+        const response = await axios.delete(`http://localhost:3001/videogames/${id}`)
+        
+        console.log('SOY RESPONSE', response)
+        if (response.status === 200) {
+            dispatch({ type: DELETE_GAME, payload: id })
+        }
+    
+    } catch(error) {
+        dispatch({ type: MESSAGE, payload: error.response.data})
+    }
+}
+
+export const updateGame = async(game, dispatch) => {
+    try {
+        const { data } = await axios.put(`http://localhost:3001/videogames/${game.id}`, game)
+        console.log(data)
+        dispatch({ type: UPDATE_GAME, payload: data })
+       
+    
+    } catch(error) {
+        console.log(error)
+        dispatch({ type: MESSAGE, payload: error})
+    }
+    
+}
+
+
+
+   
 
 

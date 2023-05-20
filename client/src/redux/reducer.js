@@ -11,7 +11,9 @@ import {
     CLEAR, 
     GAMES_CREATED, 
     CLEAR_STATE,
-    CLEAR_GAMES_BY_NAME
+    CLEAR_GAMES_BY_NAME,
+    DELETE_GAME,
+    UPDATE_GAME
 } from './action';
 
 let initialState = {
@@ -195,6 +197,29 @@ export const rootReducer = (state = initialState, { type, payload }) => {
                     gamesByName: []
                 }
 
+            case DELETE_GAME:
+                return {
+                    ...state,
+                    allGames: [...state.allGames].filter(game => game.id === payload),
+                    gamesCreate: [...state.gamesCreate].filter(game => game.id === payload)
+                }
+
+            case UPDATE_GAME:
+                let index1 = [...state.allGames].findIndex(game => game.id === payload.id)
+                let index2 = [...state.gamesCreate].findIndex(game => game.id === payload.id)
+                
+                let allGamesCopy = [...state.allGames]
+                let gamesCreateCopy = [...state.gamesCreate]
+
+                allGamesCopy[index1] = payload
+                gamesCreateCopy[index2] = payload
+
+                return {
+                    ...state,
+                    allGames: allGamesCopy,
+                    gamesCreate: gamesCreateCopy
+                }
+                    
             default:
                 return {
                     ...state

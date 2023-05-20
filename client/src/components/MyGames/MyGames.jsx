@@ -15,9 +15,9 @@ const MyGames = () => {
     return( 
         <div className={styles.myGamesContainer}>
             {gamesCreate?.map(game => {
-                console.log(game)
                 return (
                     <GameCard 
+                        activated={true}
                         game={game} 
                         key={game.id}
                     />

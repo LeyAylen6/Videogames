@@ -108,7 +108,7 @@ const Home = () => {
                         <select value={state.genres} name='genres' onChange={onChange}>
                             <option value=''>Genres</option>
 
-                            {allGenres?.map(genre => <option value={genre.name} >{genre.name}</option> )} 
+                            {allGenres?.map(genre => <option value={genre.id} >{genre.name}</option> )} 
                         
                         </select>
                     </div>

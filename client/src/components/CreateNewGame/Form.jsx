@@ -1,16 +1,19 @@
 import styles from './form.module.css';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { getAllGenres, getAllPlatforms } from './../../redux/action'
+import { getAllGenres, getAllPlatforms, updateGame } from './../../redux/action'
 import { validation } from './../Validation/validation.js'
 import joystick from './../../assets/joystick.svg'
 import { postNewGame } from './../../redux/action';
+import { useParams } from 'react-router-dom';
 
-const Form = () => {
+const Form = (props) => {
     const allGenres = useSelector(state => state.allGenres)
     const dispatch = useDispatch()
     const allPlatforms = useSelector(state => state.allPlatforms)
     const inputs = ['name', 'image', 'description', 'releaseDate'] 
+
+    const { id } = useParams();
 
     let [state, setState] = useState({
         name: '',
@@ -18,7 +21,7 @@ const Form = () => {
         description: '',
         releaseDate: '', 
         rating: 0, 
-        platform: '',
+        platforms: '',
         genre: []
     })
 
@@ -73,13 +76,19 @@ const Form = () => {
             description: '',
             releaseDate: '', 
             rating: 0, 
-            platform: '',
+            platforms: '',
             genre: []
         })
     }
 
+    const handleUpdate = (event) => {
+        event.preventDefault();
+        updateGame({id: id, ...state}, dispatch)
+    }
+
+    // OnSubmit ejecuta una funcion distinta si es create o update
     return (
-        <form className={styles.formContainer} onSubmit={handleSubmit}>
+        <form className={styles.formContainer} onSubmit={props.create ? handleSubmit : handleUpdate}>
             
             <div className={styles.left}> 
                 <h1>- Add a new game -</h1>
@@ -131,7 +140,7 @@ const Form = () => {
                     </div>
                 </div>
                 
-                <select onChange={handleChange} name='platform' value={state.platform} className={styles.selectForm}> 
+                <select onChange={handleChange} name='platforms' value={state.platforms} className={styles.selectForm}> 
                         
                     <option value={''} >Platform</option>
 
@@ -154,7 +163,7 @@ const Form = () => {
                                 <input 
                                     id={genre.id}
                                     type="checkbox" 
-                                    value={genre.name} 
+                                    value={genre.id} 
                                     onChange={handleChange} 
                                     className={styles.checkboxForm}>
                                 </input> 
@@ -165,7 +174,7 @@ const Form = () => {
                     })}
                 </div>
             </div>
-
+            
             <button 
                 className={styles.submitButton} 
                 type='submit' 
