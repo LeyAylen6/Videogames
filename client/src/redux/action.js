@@ -47,6 +47,7 @@ export const orderBy = (object) => {
 
 export const getAllGenres = async(dispatch) => {
     try {
+        
         const { data } = await axios(`/genres`)
         dispatch({ type: GET_GENRES, payload: data })
         
@@ -127,7 +128,6 @@ export const updateGame = async(game, dispatch) => {
       
         dispatch({ type: MESSAGE, payload: error.message})
     }
-    
 }
 
 
