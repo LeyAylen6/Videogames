@@ -7,18 +7,14 @@ const GameCard = (props) => {
     const dispatch = useDispatch()
 
     const handleDelete = () => {
-        deleteGame(props.game, dispatch)
+        deleteGame(props.game.id, dispatch)
     }
-
-    // const handleEdit = () => {
-    //     updateGame(props.game.id, dispatch)
-    // }
 
     return (
         <div className={styles.cardContainer}>
             
-            {props.activated && <button onClick={handleDelete} >x</button>}
-            {props.activated && <Link to={`/update/${props.game.id}`}>Edit</Link>}
+            {props.activated && <button onClick={handleDelete} className={styles.deleteButton}>x</button>}
+            {props.activated && <Link to={`/update/${props.game.id}`} className={styles.updateLink} >Edit</Link>}
 
             <Link to={`/detail/${props.game.id}`} className={styles.linkImage} >
                 <img src={props.game.image} alt={props.game.name} />

@@ -32,7 +32,7 @@ const Detail = () => {
                 {name ? <h1 className={styles.name}>{name}</h1> : null}
 
                 <h2>Platforms: </h2>
-                {platforms && Array.isArray(platforms) ? <div className={styles.miniCards}>{platforms.map(platform => <p className={styles.map} key={platform.id}>{platform.name}</p>)}</div> : null }
+                {platforms && <div className={styles.miniCards}>{platforms.map(platform => <p className={styles.map} key={platform.id}>{platform.name}</p>)}</div>}
                 <hr />
                 {releaseDate ? <h2>Release Date: {releaseDate}</h2> : null}
                 <hr />

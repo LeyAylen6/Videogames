@@ -8,9 +8,8 @@ import { postNewGame } from './../../redux/action';
 import { useParams } from 'react-router-dom';
 
 const Form = (props) => {
-    const allGenres = useSelector(state => state.allGenres)
     const dispatch = useDispatch()
-    const allPlatforms = useSelector(state => state.allPlatforms)
+    const { allPlatforms, allGenres, allGames } = useSelector(state => state)
     const inputs = ['name', 'image', 'description', 'releaseDate'] 
 
     const { id } = useParams();
@@ -22,7 +21,7 @@ const Form = (props) => {
         releaseDate: '', 
         rating: 0, 
         platforms: '',
-        genre: []
+        genre: undefined
     })
 
     let [errors, setErrors] = useState({});
@@ -30,6 +29,26 @@ const Form = (props) => {
     useEffect(() => {
         getAllGenres(dispatch);
         getAllPlatforms(dispatch);
+
+        if (!props.create) {
+            let gameRestore = allGames.filter(game => game.id === id)
+            console.log(gameRestore)
+            
+            setState({
+                ...state,
+                name: gameRestore[0].name,
+                image: gameRestore[0].image,
+                description: gameRestore[0].description,
+                releaseDate: gameRestore[0].releaseDate, 
+                rating: gameRestore[0].rating, 
+                platforms: gameRestore[0].platforms[0].name,
+                genre: gameRestore[0].genres?.map(game => game.id)
+            })
+            
+        } else {
+            setState({...state, genre: []})
+        }
+        
     }, [])
 
     // Controla valores de los input y errores
@@ -86,12 +105,16 @@ const Form = (props) => {
         updateGame({id: id, ...state}, dispatch)
     }
 
+    const isChecked = (id) => {
+        return state.genre?.includes(id)
+    }
+
     // OnSubmit ejecuta una funcion distinta si es create o update
     return (
         <form className={styles.formContainer} onSubmit={props.create ? handleSubmit : handleUpdate}>
             
             <div className={styles.left}> 
-                <h1>- Add a new game -</h1>
+                <h1>{props.create ? '- Add a new game -' : '- Update game -' }</h1>
                 
                 {inputs?.map(input => {
                     return (
@@ -164,6 +187,7 @@ const Form = (props) => {
                                     id={genre.id}
                                     type="checkbox" 
                                     value={genre.id} 
+                                    defaultChecked={isChecked(genre.id)}
                                     onChange={handleChange} 
                                     className={styles.checkboxForm}>
                                 </input> 
@@ -180,7 +204,7 @@ const Form = (props) => {
                 type='submit' 
                 disabled= { Object.values(errors).length != 0 }
                 >
-                    <span className={styles.text}>Create game</span>
+                    <span className={styles.text}>{props.create ? 'Create game' : 'Update game'}</span>
             </button>
 
         </form>

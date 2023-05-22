@@ -4,6 +4,8 @@ import GameCard from "../GameCard/GameCard"
 import style from './home.module.css'
 import { getAllGames, getAllGenres, clearGamesByName, orderBy, restoreAllGames } from "../../redux/action";
 import { useState } from "react";
+import noMatches from './../../assets/noHayResultados.svg'
+import loading from './../../assets/loading.gif'
 
 const Home = () => {
     const dispatch = useDispatch()
@@ -69,14 +71,25 @@ const Home = () => {
                 </div> */}
                 
                 
-                <div className={style.cardsContainer} >
-                    {(state.allGames ? allGamesFiltered : gamesByName).map((game) => {
-                        return <GameCard game={game} key={game.id} /> 
-                        })
+                <div className={style.container} >
+                    {allGames.length < 1 && allGamesFiltered.length < 1 ? <img src={loading} className={style.loading} /> : null}
+                    
+                    {(allGames.length > 0 && allGamesFiltered.length < 1) && 
+                        <div className={style.messageNoMatches}>
+                            <img src= {noMatches} />
+                            <span>No matches were found for the search</span>
+                        </div>
                     }
+
+                    <div className={style.cardsContainer}>
+                        {(state.allGames && allGamesFiltered.length > 1 ? allGamesFiltered : gamesByName).map((game) => {
+                            return <GameCard game={game} key={game.id} /> 
+                            })
+                        }
+                    </div>
                 </div>
                 
-                {state.allGames && 
+                {(state.allGames && allGamesFiltered.length > 0) && 
                     <div>
                         {page > 1 ? <button name='prev' value='true' onClick={onChange} >Previous</button> : null}
                         <p>{page}</p>
@@ -87,7 +100,7 @@ const Home = () => {
             </section>
 
             <section className={style.filtersContainer}>
-                <button onClick={onClick} >Todos los juegos</button>
+                <button onClick={onClick} className={style.allGamesButton}>Todos los juegos</button>
 
                 {state.allGames && 
                     <div className={style.filters}>

@@ -6,17 +6,15 @@
     justify-content: space-evenly;
 }
 
-.genresContainer {
+/* .genresContainer {
     width: 70%;
     height: 10%;
     display: flex;
     justify-content: space-around;
-    
     position: relative;
-        display: flex;
-        overflow: auto;
-        scroll-snap-type: x mandatory;
-      
+    display: flex;
+    overflow: auto;
+    scroll-snap-type: x mandatory;
 }
 
 .genresContainer p {
@@ -39,16 +37,48 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
+} */
 
-.genreCard:hover {
+/* .genreCard:hover {
     background-color: rgb(9, 9, 9); 
     opacity: 0.8;
+} */
+
+.container {
+    height: 100%;
+    width: 100%;
+}
+
+.loading {
+    margin-top: 200px;
+    width: 200px;
+}
+
+.messageNoMatches {
+    margin-top: 100px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.messageNoMatches > img {
+    width: 500px;
+
+}
+
+.messageNoMatches > span {
+    margin-top: 20px;
+    width: 100%;
+    color: white;
+    font-size: 25px;
 }
 
 .cardsContainer {
     margin-top: 30px;
-    width: 100%;
+    width: 1150px;
     height: 100%;
     display: grid;
     grid-template-columns: 22% 22% 22% 22%;
@@ -60,12 +90,49 @@
 
 .filtersContainer {
     margin-top: 30px;
-    width: 15%;
+    width: 250px;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    font-family: 'Poppins', sans-serif;
 }
+
+.allGamesButton {
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    position: relative;
+    background-color: rgb(248, 255, 43);
+    border-radius: 7px;
+    border:none;
+    z-index: 1;
+    overflow: hidden;
+    display: inline-block;
+    font-size: 20px;
+}
+
+.allGamesButton::after {
+content: "";
+background: #ffffff;
+position: absolute;
+z-index: -1;
+color: black;
+display: block;
+left: -20%;
+right: -20%;
+top: 0;
+bottom: 0;
+transform: skewX(45deg) scale(0, 1);
+transition: all 0.3s ease;
+}
+
+.allGamesButton:hover::after {
+transition: all 0.3s ease-out;
+transform: skewX(45deg) scale(1, 1);
+}
+
+
 
 select {
     margin-top: 20px;
@@ -79,7 +146,8 @@ select {
     font-size: 18px;
     color: rgb(193, 193, 193);
     background-color: rgb(0, 0, 0);
-    font-family: 'Poppins', sans-serif;
     border: none;
 }
+
+
 

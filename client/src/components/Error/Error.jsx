@@ -13,7 +13,8 @@ const Error = (props) => {
         <div className={styles.background}>
             <div className={styles.error}>
                 <h1 className={styles.message}>{props.error}</h1>
-                <button className={styles.delete} onClick={onClick}>X</button>
+                <button className={styles.delete} onClick={onClick}>Aceptar</button>
+             
             </div>
         </div>
     );
