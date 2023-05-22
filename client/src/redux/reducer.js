@@ -35,7 +35,8 @@ export const rootReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 allGames: payload,
-                allGamesFiltered: [...payload].slice(0, 15)
+                allGamesFiltered: [...payload].slice(0, 15),
+                gamesCreate: payload.filter(game => typeof(game.id) !== 'number')
             }
 
         case RESTORE_ALL_GAMES:
@@ -53,7 +54,8 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         case POST_GAME:
             return {
                 ...state,
-                allGames: [payload, ...state.allGames]
+                allGames: [payload, ...state.allGames],
+                allGamesFiltered: [payload, ...state.allGamesFiltered]
             }
 
         case GAMES_CREATED: 
@@ -140,9 +142,12 @@ export const rootReducer = (state = initialState, { type, payload }) => {
                         break
 
                     default:
-                        ordering = ordering.filter(game => {   // game -> genre -> array[i] (uno de sus generos) -> name de genre -//- (game.genre[i].name)
+                        console.log('ordering', ordering)
+                        ordering = ordering.filter(game => {   
+                            // game -> genre -> array[i] (uno de sus generos) -> name de genre -//- (game.genre[i].name)
+                            
                             for(let i = 0; i < game.genres.length; i++) {
-                                if (game.genres[i].name == payload.genres) {
+                                if (game.genres[i].id == payload.genres) {
                                     return true;  
                                 }  
                             }
@@ -200,8 +205,9 @@ export const rootReducer = (state = initialState, { type, payload }) => {
             case DELETE_GAME:
                 return {
                     ...state,
-                    allGames: [...state.allGames].filter(game => game.id === payload),
-                    gamesCreate: [...state.gamesCreate].filter(game => game.id === payload)
+                    allGames: [...state.allGames].filter(game => game.id !== payload),
+                    allGamesFiltered: [...state.allGamesFiltered].filter(game => game.id !== payload),
+                    gamesCreate: [...state.gamesCreate].filter(game => game.id !== payload)
                 }
 
             case UPDATE_GAME:

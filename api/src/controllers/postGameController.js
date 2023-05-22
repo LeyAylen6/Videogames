@@ -1,6 +1,7 @@
 const { Videogame, Genre } = require('../db')
 const { videogame_genre } = require('../db')
 const { getAllGenres } = require('./getAllGenresController');
+const { objectConstructor }= require('./../utils/objectConstructor')
 
 const postGame = async(name, description, platforms, image, releaseDate, rating, genres) => {
     // Esta ruta recibirá todos los datos necesarios para crear un videojuego y relacionarlo con sus géneros solicitados.
@@ -47,7 +48,7 @@ const postGame = async(name, description, platforms, image, releaseDate, rating,
         include: Genre
     })
 
-    return gameWithGenre;
+    return objectConstructor(gameWithGenre);
 }
 
 module.exports = { postGame }

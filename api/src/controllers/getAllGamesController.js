@@ -1,8 +1,13 @@
 const axios = require('axios');
 const { objectConstructor } = require('./../utils/objectConstructor')
+const { Videogame, Genre } = require('./../db');
 
 const getAllGames = async() => {
     const { URL_BASE, KEY } = process.env;
+
+    const gamesByDB = await Videogame.findAll({
+        include: Genre
+    })
 
     let count = 1;
     let dataFound = [];
@@ -12,8 +17,10 @@ const getAllGames = async() => {
         dataFound = [...dataFound, ...data.results]
         count ++
     }
-   
-    return dataFound.map(game => objectConstructor(game)); 
+    
+    let result = dataFound; 
+
+    return [...gamesByDB, ...result].map(game => objectConstructor(game))
 };
 
 module.exports = { getAllGames }

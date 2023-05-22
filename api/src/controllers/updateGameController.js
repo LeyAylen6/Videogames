@@ -53,8 +53,6 @@ const updateGame = async(id, game) => {
         include: Genre
     })
 
-    // gameByDB2 = {...gameByDB2, platforms: [gameByDB2.platforms]}
-    console.log(gameByDB2)
     return gameByDB2;
 }
 

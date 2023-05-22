@@ -12,7 +12,7 @@ const getGameById = async(id) => {
             include: Genre
         })
         
-        return gameByDB;
+        return objectConstructor(gameByDB);
 
     } catch(error) {
 

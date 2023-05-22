@@ -70,7 +70,6 @@ export const postNewGame = async(game, dispatch) => {
         const { data } = await axios.post(`http://localhost:3001/videogames`, game)
         dispatch({ type: POST_GAME, payload: data })    // Respuesta respecto al post
         dispatch({ type: MESSAGE, payload: 'Successfully created!' })
-        console.log(data)
 
     } catch(error) {
         dispatch({ type: MESSAGE, payload: error.response.data})
@@ -120,13 +119,13 @@ export const deleteGame = async(id, dispatch) => {
 export const updateGame = async(game, dispatch) => {
     try {
         const { data } = await axios.put(`http://localhost:3001/videogames/${game.id}`, game)
-        console.log(data)
+       
         dispatch({ type: UPDATE_GAME, payload: data })
         dispatch({ type: MESSAGE, payload: 'Successfully updated!' })
        
     } catch(error) {
-        console.log(error)
-        dispatch({ type: MESSAGE, payload: error})
+      
+        dispatch({ type: MESSAGE, payload: error.message})
     }
     
 }
