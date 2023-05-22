@@ -82,7 +82,7 @@ const Home = () => {
                     }
 
                     <div className={style.cardsContainer}>
-                        {(state.allGames && allGamesFiltered.length > 1 ? allGamesFiltered : gamesByName).map((game) => {
+                        {(state.allGames && allGamesFiltered.length > 0 ? allGamesFiltered : gamesByName).map((game) => {
                             return <GameCard game={game} key={game.id} /> 
                             })
                         }

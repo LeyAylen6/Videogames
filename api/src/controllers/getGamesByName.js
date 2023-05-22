@@ -1,4 +1,4 @@
-const { Videogame } = require('../db');
+const { Videogame, Genre } = require('../db');
 const axios = require('axios');
 const { objectConstructor } = require('./../utils/objectConstructor')
 const { Op } = require("sequelize");
@@ -15,7 +15,8 @@ const getGamesByName = async(name) => {
         where: { 
             name: { [Op.iLike]: `%${name}%`} 
         },
-        limit: 15
+        limit: 15,
+        include: Genre
     })
     
     let savedGames = gamesFound.length
@@ -24,9 +25,10 @@ const getGamesByName = async(name) => {
 
     if(data.length < 1) throw new Error('No existe un videojuego con el nombre solicitado')
 
-    let object = data?.results?.map(game => objectConstructor(game))
+    // let object = data?.results?.map(game => objectConstructor(game))
+    console.log(data.results)
 
-    return [...gamesFound, ...object]; 
+    return [...gamesFound, ...data.results].map(game => objectConstructor(game)); 
     
     // ! Se envia el mismo objeto normalizado que en byId y en allGames
 }
