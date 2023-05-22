@@ -8,7 +8,7 @@ const objectConstructor = (gameData) => {
         description: gameData.description ? gameData.description : null, 
         platforms: myPlatforms,
         image: gameData.background_image || gameData.image, 
-        releaseDate: gameData.released || gameData.releaseDate.toLocaleDateString('en-CA'),
+        releaseDate: gameData.released || typeof gameData.releaseDate === 'object' ? gameData.releaseDate.toLocaleDateString('en-CA') : 'No tiene fecha' ,
         rating: gameData.rating,
         genres: myGenres,
     }
