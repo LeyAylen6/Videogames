@@ -53,6 +53,7 @@ export const getAllGenres = async(dispatch) => {
         dispatch({ type: GET_GENRES, payload: data })
         
     } catch(error) {
+        console.log('soy error', error)
         dispatch({ type: MESSAGE, payload: error.response.data})
     }
 }
