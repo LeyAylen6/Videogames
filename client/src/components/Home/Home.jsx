@@ -16,11 +16,11 @@ const Home = () => {
     const { allGamesFiltered, gamesByName, allGenres , page, allGames, nextPage } = useSelector(state => state)
 
     let [state, setState] = useState({
-        ubication: '',
-        order: '',
-        genres: '',
-        prev: '',
-        next: '',
+        ubication: 'Ubication',
+        order: 'OrderBy',
+        genres: 'Genres',
+        prev: false,
+        next: false,
         allGames: true
     })
 
@@ -35,8 +35,8 @@ const Home = () => {
     },[gamesByName])
 
     const onChange = (event) => {
-        let name = event.target.name == undefined ? event.target.parentElement.name : event.target.name
-        let value = event.target.value == undefined ? event.target.parentElement.value : event.target.value
+        let name = event.target.name || event.target.parentElement.name
+        let value = event.target.value || event.target.parentElement.value
         
         setState({
             ...state,
@@ -69,7 +69,7 @@ const Home = () => {
     return (
         <div className={style.homeContainer}>
             
-            <section>
+            <section className={style.leftSection}>
                 
                 <div className={style.container} >
                     {allGames.length < 1 && allGamesFiltered.length < 1 ? <img src={loading} className={style.loading} /> : null}
@@ -83,21 +83,24 @@ const Home = () => {
 
                     <div className={style.cardsContainer}>
                         {(state.allGames && allGamesFiltered.length > 0 ? allGamesFiltered : gamesByName).map((game) => {
-                            return <GameCard game={game} key={game.id} /> 
-                            })
-                        }
+                            return (
+                                <div key={game.id}> 
+                                    <GameCard game={game} /> 
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
                 
                 {(state.allGames && allGamesFiltered.length > 0) && 
                     (<div className={style.paginate}>
                         {page > 1 
-                            ? <button name='prev' value='true' onClick={onChange } className={`${style.prev} ${style.active}`} ><img src={prev} /></button> 
+                            ? <button name='prev' value='true' onClick={onChange } className={`${style.prev} ${style.active}`} ><img name={undefined} value={undefined} src={prev} /></button> 
                             : <button className={style.prev}><img src={prevDisabled} /></button>
                         }
                         <p>{`Page ${page}`}</p>
                         { nextPage 
-                            ? <button name='next' value='true' onClick={onChange} className={`${style.next} ${style.active}`} ><img src={next} /></button> 
+                            ? <button name='next' value='true' onClick={onChange} className={`${style.next} ${style.active}`} ><img name={undefined} value={undefined} src={next} /></button> 
                             : <button className={style.next}><img src={nextDisabled} /></button>
                         }
                     </div>)
@@ -125,9 +128,9 @@ const Home = () => {
                         </select>
 
                         <select value={state.genres} name='genres' onChange={onChange}>
-                            <option value=''>Genres</option>
+                            <option value='Genres'>Genres</option>
 
-                            {allGenres?.map(genre => <option value={genre.id} >{genre.name}</option> )} 
+                            {allGenres?.map(genre => <option key={genre.id} value={genre.id} >{genre.name}</option> )} 
                         
                         </select>
                     </div>
