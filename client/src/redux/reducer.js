@@ -233,7 +233,8 @@ export const rootReducer = (state = initialState, { type, payload }) => {
             case RESTORE_PAGE_1:
                 return {
                     ...state,
-                    page: 1
+                    page: 1,
+                    nextPage: true
                 }
                     
             default:
