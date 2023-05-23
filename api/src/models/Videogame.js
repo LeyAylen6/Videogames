@@ -29,7 +29,7 @@ module.exports = (sequelize) => {
     },
     
     image: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(2083),
       allowNull: false,
       defaultValue: 'https://www.canva.com/design/DAFipqAhwx4/tcsBMdRdVkDYSjiiiPNRDA/watch?utm_content=DAFipqAhwx4&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink'
     },

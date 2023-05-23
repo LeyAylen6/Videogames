@@ -13,7 +13,8 @@ import {
     CLEAR_STATE,
     CLEAR_GAMES_BY_NAME,
     DELETE_GAME,
-    UPDATE_GAME
+    UPDATE_GAME,
+    RESTORE_PAGE_1
 } from './action';
 
 let initialState = {
@@ -142,7 +143,6 @@ export const rootReducer = (state = initialState, { type, payload }) => {
                         break
 
                     default:
-                        console.log('ordering', ordering)
                         ordering = ordering.filter(game => {   
                             // game -> genre -> array[i] (uno de sus generos) -> name de genre -//- (game.genre[i].name)
                             
@@ -224,6 +224,12 @@ export const rootReducer = (state = initialState, { type, payload }) => {
                     ...state,
                     allGames: allGamesCopy,
                     gamesCreate: gamesCreateCopy
+                }
+
+            case RESTORE_PAGE_1:
+                return {
+                    ...state,
+                    page: 1
                 }
                     
             default:

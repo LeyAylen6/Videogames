@@ -35,6 +35,7 @@
 }
 
 .label {
+    margin-top: 10px;
     font-size: 25px;
     color: rgb(191, 191, 191);
     font-family: 'Lobster Two', cursive;

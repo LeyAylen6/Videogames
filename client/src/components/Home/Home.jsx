@@ -2,10 +2,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import GameCard from "../GameCard/GameCard"
 import style from './home.module.css'
-import { getAllGames, getAllGenres, clearGamesByName, orderBy, restoreAllGames } from "../../redux/action";
+import { getAllGames, getAllGenres, clearGamesByName, orderBy, restoreAllGames, restorePage1 } from "../../redux/action";
 import { useState } from "react";
 import noMatches from './../../assets/noHayResultados.svg'
 import loading from './../../assets/loading.gif'
+import prev from './../../assets/previous.svg'
+import next from './../../assets/next.svg'
+import prevDisabled from './../../assets/prevDisabled.svg'
+import nextDisabled from './../../assets/nextDisabled.svg'
 
 const Home = () => {
     const dispatch = useDispatch()
@@ -31,19 +35,22 @@ const Home = () => {
     },[gamesByName])
 
     const onChange = (event) => {
+        let name = event.target.name == undefined ? event.target.parentElement.name : event.target.name
+        let value = event.target.value == undefined ? event.target.parentElement.value : event.target.value
+        
         setState({
             ...state,
-            [event.target.name]: event.target.value
+            [name]: value
         })
 
         dispatch(orderBy({
             ...state,
-            [event.target.name]: event.target.value
+            [name]: value
         }))
 
         setState({
             ...state,
-            [event.target.name]: event.target.value,
+            [name]: value,
             prev: false,
             next: false,
         })
@@ -56,20 +63,13 @@ const Home = () => {
             allGames: true
         })
         clearGamesByName(dispatch)
+        restorePage1(dispatch)
     }
 
     return (
         <div className={style.homeContainer}>
             
-            {/* <h1>Los géneros mas populares</h1> */}
             <section>
-                {/* <div className={style.genresContainer}> 
-                    {allGenres?.map((genre) => {
-                        return <p className={style.genreCard}key={genre.id}>{genre.name}</p> 
-                        })
-                    }
-                </div> */}
-                
                 
                 <div className={style.container} >
                     {allGames.length < 1 && allGamesFiltered.length < 1 ? <img src={loading} className={style.loading} /> : null}
@@ -90,11 +90,17 @@ const Home = () => {
                 </div>
                 
                 {(state.allGames && allGamesFiltered.length > 0) && 
-                    <div>
-                        {page > 1 ? <button name='prev' value='true' onClick={onChange} >Previous</button> : null}
-                        <p>{page}</p>
-                        {nextPage ? <button name='next' value='true' onClick={onChange} >Next</button> : null}
-                    </div>
+                    (<div className={style.paginate}>
+                        {page > 1 
+                            ? <button name='prev' value='true' onClick={onChange } className={`${style.prev} ${style.active}`} ><img src={prev} /></button> 
+                            : <button className={style.prev}><img src={prevDisabled} /></button>
+                        }
+                        <p>{`Page ${page}`}</p>
+                        { nextPage 
+                            ? <button name='next' value='true' onClick={onChange} className={`${style.next} ${style.active}`} ><img src={next} /></button> 
+                            : <button className={style.next}><img src={nextDisabled} /></button>
+                        }
+                    </div>)
                 }
 
             </section>
@@ -105,7 +111,7 @@ const Home = () => {
                 {state.allGames && 
                     <div className={style.filters}>
                         <select value={state.order} name='order' onChange={onChange}>
-                            <option value=''>Order by</option>
+                            <option value='OrderBy'>Order by</option>
                             <option value='ascendent'>Ascendent</option>
                             <option value='descendent'>Descendent</option>
                             <option value='alfabetic'>Alphabetically</option>
@@ -113,7 +119,7 @@ const Home = () => {
                         </select>
 
                         <select value={state.ubication} name='ubication' onChange={onChange}>
-                            <option value=''>Ubicacion</option>
+                            <option value='Ubication'>Ubication</option>
                             <option value='API'>API</option>
                             <option value='DB'>Data base</option>
                         </select>
