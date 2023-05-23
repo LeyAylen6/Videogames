@@ -1,4 +1,5 @@
 const { videogame_genre, Videogame, Genre } = require('./../db')
+const { objectConstructor } = require('./../utils/objectConstructor')
 
 const updateGame = async(id, game) => {
 
@@ -48,12 +49,12 @@ const updateGame = async(id, game) => {
         })
     })
 
-    let gameByDB2 = await Videogame.findOne({
+    let gameByDBWhitGenre = await Videogame.findOne({
         where: { id: id },
         include: Genre
     })
 
-    return gameByDB2;
+    return objectConstructor(gameByDBWhitGenre);
 }
 
 module.exports = updateGame;

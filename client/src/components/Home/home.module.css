@@ -6,6 +6,13 @@
     justify-content: space-evenly;
 }
 
+.leftSection {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
+}
+
 /* .genresContainer {
     width: 70%;
     height: 10%;
@@ -66,7 +73,6 @@
 
 .messageNoMatches > img {
     width: 500px;
-
 }
 
 .messageNoMatches > span {
@@ -89,14 +95,11 @@
 }
 
 .paginate {
-    /* display: grid;
-    grid-row: 3 / 5;
-    justify-items: center;
-     */
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     width: 250px;
+    margin-right: 280px;
 }
 
 .paginate > p {
