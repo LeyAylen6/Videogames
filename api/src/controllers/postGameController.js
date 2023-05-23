@@ -4,9 +4,6 @@ const { getAllGenres } = require('./getAllGenresController');
 const { objectConstructor }= require('./../utils/objectConstructor')
 
 const postGame = async(name, description, platforms, image, releaseDate, rating, genres) => {
-    // Esta ruta recibirá todos los datos necesarios para crear un videojuego y relacionarlo con sus géneros solicitados.
-    // Toda la información debe ser recibida por body.
-    // Debe crear un videojuego en la base de datos, y este debe estar relacionado con sus géneros indicados (al menos uno).
     
     let newGame = {
         name: name,
@@ -14,7 +11,15 @@ const postGame = async(name, description, platforms, image, releaseDate, rating,
         platforms: platforms
     }
 
-    if (image) newGame.image = image
+    if(image) {
+        let img = image.split('.')
+        
+        if (img[img.length - 1] === 'jpg' || img[img.length - 1] === 'png' || img[img.length - 1] === 'jpeg') {
+            newGame.image = image
+
+        } else newGame.image = 'https://henry-videogames.up.railway.app/static/media/Logo.c40bc3667955bb1f94a8.png'
+    }
+
     if (releaseDate) newGame.releaseDate = releaseDate
     if (rating) newGame.rating = rating
 
