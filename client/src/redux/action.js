@@ -120,7 +120,7 @@ export const deleteGame = async(id, dispatch) => {
 
 export const updateGame = async(game, dispatch) => {
     try {
-        const { data } = await axios.put(`http://localhost:3001/videogames/${game.id}`, game)
+        const { data } = await axios.put(`/videogames/${game.id}`, game)
        
         dispatch({ type: UPDATE_GAME, payload: data })
         dispatch({ type: MESSAGE, payload: 'Successfully updated!' })
@@ -129,7 +129,6 @@ export const updateGame = async(game, dispatch) => {
       
         dispatch({ type: MESSAGE, payload: error.message})
     }
-    
 }
 
 export const restorePage1 = (dispatch) => {
