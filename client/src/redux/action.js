@@ -15,6 +15,7 @@ export const CLEAR_STATE = 'CLEAR_STATE';
 export const CLEAR_GAMES_BY_NAME = 'CLEAR_GAMES_BY_NAME';
 export const DELETE_GAME = 'DELETE_GAME';
 export const UPDATE_GAME = 'UPDATE_GAME';
+export const RESTORE_PAGE_1 = 'RESTORE_PAGE_1';
 
 export const getAllGames = async(dispatch) => {
     try {
@@ -36,6 +37,7 @@ export const restoreAllGames = (dispatch) => {
 }
 
 export const orderBy = (object) => {
+
     return { type: ORDER, payload: {
         ubication: object.ubication, 
         order: object.order, 
@@ -47,7 +49,6 @@ export const orderBy = (object) => {
 
 export const getAllGenres = async(dispatch) => {
     try {
-        
         const { data } = await axios(`/genres`)
         dispatch({ type: GET_GENRES, payload: data })
         
@@ -128,6 +129,10 @@ export const updateGame = async(game, dispatch) => {
       
         dispatch({ type: MESSAGE, payload: error.message})
     }
+}
+
+export const restorePage1 = (dispatch) => {
+    dispatch({ type: RESTORE_PAGE_1 })
 }
 
 
