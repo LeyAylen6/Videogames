@@ -106,7 +106,6 @@ export const deleteGame = async(id, dispatch) => {
     try {
         const response = await axios.delete(`/videogames/${id}`)
         
-        console.log('SOY RESPONSE', response)
         if (response.status === 200) {
             dispatch({ type: DELETE_GAME, payload: id })
             dispatch({ type: MESSAGE, payload: 'Successfully removed!' })
