@@ -99,6 +99,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
 
                 let ordering 
                 let actualPage = state.page
+                
 
                 switch(payload.order) {
                     

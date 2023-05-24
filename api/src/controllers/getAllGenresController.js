@@ -3,16 +3,19 @@ const axios = require('axios');
 
 const getAllGenres = async() => {
     const { URL_BASE, KEY } = process.env;
-    const { data } = await axios(`${URL_BASE}/genres?key=${KEY}`)
-    const genresArray = data.results;
+    
+    let genresInDB = await Genre.findAll()
 
-    const genresInDB = await Genre.findAll()
+    if(genresInDB.length < 1) {
+        const { data } = await axios(`${URL_BASE}/genres?key=${KEY}`)
+        const genresArray = data.results;
 
-    if(genresInDB.length < 1) await Genre.bulkCreate(genresArray, { fields: ['id', 'name'] });
+        await Genre.bulkCreate(genresArray, { fields: ['id', 'name'] });
+    }
 
-    const newGenres = await Genre.findAll();
+    genresInDB = await Genre.findAll();
 
-    return newGenres;
+    return genresInDB;
 }
 
 module.exports = { getAllGenres }

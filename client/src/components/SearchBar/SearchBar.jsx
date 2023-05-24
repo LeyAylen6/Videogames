@@ -6,7 +6,7 @@ import search from './../../assets/search.svg'
 
 const SearchBar = () => {
     const dispatch = useDispatch();
-    let [name, setName] = useState();
+    let [name, setName] = useState('');
 
     const onSearch = () => {
         getGamesByName(name, dispatch)
