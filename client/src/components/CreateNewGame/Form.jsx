@@ -21,8 +21,10 @@ const Form = (props) => {
         releaseDate: '', 
         rating: 0, 
         platforms: '',
-        genre: undefined
+        genre: []
     })
+
+    let [checkboxState, setCheckboxState] = useState(allGenres.map(genre => { return {...genre, check: false} }))
 
     let [errors, setErrors] = useState({});
 
@@ -32,7 +34,7 @@ const Form = (props) => {
 
         if (!props.create) {
             let gameRestore = allGames.filter(game => game.id === id)
-            console.log(gameRestore)
+            let genresRestored = gameRestore[0].genres?.map(game => game.id)
             
             setState({
                 ...state,
@@ -42,24 +44,48 @@ const Form = (props) => {
                 releaseDate: gameRestore[0].releaseDate, 
                 rating: gameRestore[0].rating, 
                 platforms: gameRestore[0].platforms[0].name,
-                genre: gameRestore[0].genres?.map(game => game.id)
+                genre: genresRestored
             })
-            
-        } else {
-            setState({...state, genre: []})
+
+            setCheckboxState(checkboxState.map(genre => {
+                return {
+                    ...genre,
+                    check: genresRestored.includes(genre.id)
+                }
+            }))
+
         }
-        
     }, [])
 
     // Controla valores de los input y errores
     const handleChange = (event) => {
         if (event.target.type === 'checkbox') {
+            setCheckboxState(checkboxState.map(genre => {
+                return {
+                    ...genre,
+                    check: genre.id == event.target.id ? !genre.check : genre.check
+                    // Busca el id del que se hizo click y lo cambia al contrario. Por si pone o saca el tilde.
+                }
+            }))
+
+            let newGenres
+
             if (event.target.checked) {
-                setState({
-                    ...state,
-                    genre: [...state.genre, event.target.value]
-                }) 
+                newGenres = [...state.genre, event.target.value]
+
+            } else {
+                newGenres = state.genre.filter(id => id != event.target.id)
             }
+            
+            setState({
+                ...state,
+                genre: newGenres
+            }) 
+
+            setErrors(validation({
+                ...state,
+                genre: newGenres
+            }))
 
         } else {
             event.preventDefault();
@@ -69,10 +95,9 @@ const Form = (props) => {
             })
 
             setErrors(validation({
-                    ...state,
-                    [event.target.name]: event.target.value
-                })
-            )
+                ...state,
+                [event.target.name]: event.target.value
+            }))
         }
     }
 
@@ -98,15 +123,25 @@ const Form = (props) => {
             platforms: '',
             genre: []
         })
+
+        setCheckboxState(checkboxState.map(genre => { return {...genre, check: false} }))
     }
+
+    const handleStars = (stars) => {
+        setState({ 
+            ...state, 
+            rating: stars 
+        })
+    
+        setErrors(validation({
+            ...state,
+            rating: stars
+        })
+    )} 
 
     const handleUpdate = (event) => {
         event.preventDefault();
         updateGame({id: id, ...state}, dispatch)
-    }
-
-    const isChecked = (id) => {
-        return state.genre?.includes(id)
     }
 
     // OnSubmit ejecuta una funcion distinta si es create o update
@@ -116,9 +151,9 @@ const Form = (props) => {
             <div className={styles.left}> 
                 <h1>{props.create ? '- Add a new game -' : '- Update game -' }</h1>
                 
-                {inputs?.map(input => {
+                {inputs?.map((input, index) => {
                     return (
-                        <div className={styles.inputContainer} key={input.id}>
+                        <div className={styles.inputContainer} key={index}>
                             
                             <label className={styles.label} htmlFor={input} >
                                 {input}
@@ -137,7 +172,7 @@ const Form = (props) => {
                                 {errors[input] ? <p className={styles.error}>{errors[input]}</p> : null}
                             </div>
                             
-                         </div>  
+                        </div>  
                     )}
                 )}
 
@@ -146,21 +181,26 @@ const Form = (props) => {
                     <div className={styles.rating}>
 
                         <input className={styles.radio} type="radio" checked={state.rating > 4} />
-                        <label className={styles.star} onClick={() => setState({ ...state, rating: 5 })}>★</label>
+                        <label className={styles.star} onClick={() => handleStars(5)}>★</label>
 
                         <input className={styles.radio} type="radio"  checked={state.rating > 3} />
-                        <label className={styles.star} onClick={() => setState({ ...state, rating: 4 })}>★</label>
+                        <label className={styles.star} onClick={() => handleStars(4)}>★</label>
 
                         <input className={styles.radio} type="radio"  checked={state.rating > 2} />
-                        <label className={styles.star} onClick={() => setState({ ...state, rating: 3 })}>★</label>
+                        <label className={styles.star} onClick={() => handleStars(3)}>★</label>
 
                         <input className={styles.radio} type="radio"  checked={state.rating > 1} />
-                        <label className={styles.star} onClick={() => setState({ ...state, rating: 2 })}>★</label>
+                        <label className={styles.star} onClick={() => handleStars(2)}>★</label>
 
                         <input className={styles.radio} type="radio"  checked={state.rating > 0} />
-                        <label className={styles.star} onClick={() => setState({ ...state, rating: 1 })}>★</label>
-                    
+                        <label className={styles.star} onClick={() => handleStars(1)}>★</label>
+
                     </div>
+
+                    <div className={styles.errorContainer} >
+                        {errors.rating ? <p className={styles.error}>{errors.rating}</p> : null}
+                    </div>
+
                 </div>
                 
                 <select onChange={handleChange} name='platforms' value={state.platforms} className={styles.selectForm}> 
@@ -172,6 +212,11 @@ const Form = (props) => {
                     })}
 
                 </select>
+
+                <div className={styles.errorContainer} >
+                    {errors.platforms ? <p className={styles.error}>{errors.platforms}</p> : null}
+                </div>  
+
             </div>
 
             <div className={styles.right}> 
@@ -180,14 +225,14 @@ const Form = (props) => {
                 <h2>What genre does the game belong to?</h2>
 
                 <div className={styles.checkboxContainer}>
-                    {allGenres?.map(genre => {
+                    {checkboxState?.map(genre => {
                         return ( 
                             <label key={genre.id} className={styles.labelCheckbox}>
                                 <input 
                                     id={genre.id}
                                     type="checkbox" 
                                     value={genre.id} 
-                                    defaultChecked={isChecked(genre.id)}
+                                    checked={genre.check}
                                     onChange={handleChange} 
                                     className={styles.checkboxForm}>
                                 </input> 
@@ -197,12 +242,19 @@ const Form = (props) => {
                         )
                     })}
                 </div>
+
+                <div className={styles.errorContainer} >
+                    {errors.genre ? <p className={styles.error}>{errors.genre}</p> : null}
+                </div>
+
             </div>
+
+
             
             <button 
                 className={styles.submitButton} 
                 type='submit' 
-                disabled= { Object.values(errors).length != 0 }
+                disabled= { !state.name || Object.values(errors).length != 0 }
                 >
                     <span className={styles.text}>{props.create ? 'Create game' : 'Update game'}</span>
             </button>

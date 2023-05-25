@@ -13,7 +13,8 @@ import {
     CLEAR_STATE,
     CLEAR_GAMES_BY_NAME,
     DELETE_GAME,
-    UPDATE_GAME
+    UPDATE_GAME,
+    RESTORE_PAGE_1
 } from './action';
 
 let initialState = {
@@ -96,7 +97,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
 
             case ORDER: 
 
-                let ordering 
+                let ordering
                 let actualPage = state.page
 
                 switch(payload.order) {
@@ -138,11 +139,10 @@ export const rootReducer = (state = initialState, { type, payload }) => {
 
                 switch(payload.genres) {
 
-                    case '':
+                    case 'Genres':
                         break
 
                     default:
-                        console.log('ordering', ordering)
                         ordering = ordering.filter(game => {   
                             // game -> genre -> array[i] (uno de sus generos) -> name de genre -//- (game.genre[i].name)
                             
@@ -158,9 +158,9 @@ export const rootReducer = (state = initialState, { type, payload }) => {
 
                 // ! PAGINADO 
 
-                if (payload.prev === 'true' && actualPage > 1) actualPage = actualPage - 1;
+                if (payload.prev && actualPage > 1) actualPage = actualPage - 1;
 
-                else if (payload.next === 'true') actualPage = actualPage + 1;
+                else if (payload.next) actualPage = actualPage + 1;
 
                 else actualPage = 1;
 
@@ -212,18 +212,29 @@ export const rootReducer = (state = initialState, { type, payload }) => {
 
             case UPDATE_GAME:
                 let index1 = [...state.allGames].findIndex(game => game.id === payload.id)
-                let index2 = [...state.gamesCreate].findIndex(game => game.id === payload.id)
+                let index2 = [...state.allGamesFiltered].findIndex(game => game.id === payload.id)
+                let index3 = [...state.gamesCreate].findIndex(game => game.id === payload.id)
                 
                 let allGamesCopy = [...state.allGames]
+                let allGamesFilteredCopy = [...state.allGamesFiltered]
                 let gamesCreateCopy = [...state.gamesCreate]
 
                 allGamesCopy[index1] = payload
-                gamesCreateCopy[index2] = payload
+                allGamesFilteredCopy[index2] = payload
+                gamesCreateCopy[index3] = payload
 
                 return {
                     ...state,
                     allGames: allGamesCopy,
+                    allGamesFiltered: allGamesFilteredCopy,
                     gamesCreate: gamesCreateCopy
+                }
+
+            case RESTORE_PAGE_1:
+                return {
+                    ...state,
+                    page: 1,
+                    nextPage: true
                 }
                     
             default:

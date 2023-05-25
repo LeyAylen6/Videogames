@@ -25,7 +25,7 @@ const GameCard = (props) => {
             </Link>
 
             <div className={styles.genresContainer}>
-                {props.game.genres?.map(genre => <h2>{genre.name}</h2>)} 
+                {props.game.genres?.map(genre => <h2 key={genre.id}>{genre.name}</h2>)} 
             </div>
             
         </div>

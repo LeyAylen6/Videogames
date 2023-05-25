@@ -26,11 +26,9 @@ const MyGames = () => {
             <div className={styles.myGames}>
                 {gamesCreate?.map(game => {
                     return (
-                        <GameCard 
-                            activated={true}
-                            game={game} 
-                            key={game.id}
-                        />
+                        <div key={game.id}>
+                            <GameCard activated={true} game={game} />
+                        </div>
                     )
                 })}
             </div>

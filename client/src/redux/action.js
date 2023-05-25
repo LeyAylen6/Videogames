@@ -15,6 +15,7 @@ export const CLEAR_STATE = 'CLEAR_STATE';
 export const CLEAR_GAMES_BY_NAME = 'CLEAR_GAMES_BY_NAME';
 export const DELETE_GAME = 'DELETE_GAME';
 export const UPDATE_GAME = 'UPDATE_GAME';
+export const RESTORE_PAGE_1 = 'RESTORE_PAGE_1';
 
 export const getAllGames = async(dispatch) => {
     try {
@@ -22,7 +23,7 @@ export const getAllGames = async(dispatch) => {
         dispatch({ type: GET_ALL_GAMES, payload: data })
     
     } catch(error) {
-        dispatch({ type: MESSAGE, payload: error.response.data})
+        dispatch({ type: MESSAGE, payload: error?.response?.data || error })
     }
 }
 
@@ -31,11 +32,12 @@ export const restoreAllGames = (dispatch) => {
         dispatch({ type: RESTORE_ALL_GAMES })
     
     } catch(error) {
-        dispatch({ type: MESSAGE, payload: error.message})
+        dispatch({ type: MESSAGE, payload: error?.message})
     }
 }
 
 export const orderBy = (object) => {
+
     return { type: ORDER, payload: {
         ubication: object.ubication, 
         order: object.order, 
@@ -47,12 +49,11 @@ export const orderBy = (object) => {
 
 export const getAllGenres = async(dispatch) => {
     try {
-        
         const { data } = await axios(`/genres`)
         dispatch({ type: GET_GENRES, payload: data })
         
     } catch(error) {
-        dispatch({ type: MESSAGE, payload: error.response.data})
+        dispatch({ type: MESSAGE, payload: error?.response?.data || error })
     }
 }
 
@@ -62,7 +63,7 @@ export const getGamesByName = async(name, dispatch) => {
         dispatch({ type: GET_GAMES_BY_NAME, payload: data })
 
     } catch(error) {
-        dispatch({ type: MESSAGE, payload: error.response.data})
+        dispatch({ type: MESSAGE, payload: error?.response?.data || error })
     }
 }
 
@@ -73,7 +74,7 @@ export const postNewGame = async(game, dispatch) => {
         dispatch({ type: MESSAGE, payload: 'Successfully created!' })
 
     } catch(error) {
-        dispatch({ type: MESSAGE, payload: error.response.data})
+        dispatch({ type: MESSAGE, payload: error?.response?.data || error })
     }
 }
 
@@ -112,7 +113,7 @@ export const deleteGame = async(id, dispatch) => {
         }
     
     } catch(error) {
-        dispatch({ type: MESSAGE, payload: error.response.data})
+        dispatch({ type: MESSAGE, payload: error?.response?.data || error })
     }
 }
 
@@ -125,8 +126,12 @@ export const updateGame = async(game, dispatch) => {
        
     } catch(error) {
       
-        dispatch({ type: MESSAGE, payload: error.message})
+        dispatch({ type: MESSAGE, payload: error?.message})
     }
+}
+
+export const restorePage1 = (dispatch) => {
+    dispatch({ type: RESTORE_PAGE_1 })
 }
 
 

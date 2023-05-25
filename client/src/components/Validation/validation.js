@@ -15,18 +15,30 @@ export const validation = (gameData) => {
     
     else if (!regexNotSimbols.test(gameData.name)) errors.name = "The name can't contain simbols"
 
-
+    
     // ! Validación Image
     if (!gameData.image) errors.image = 'The field cannot be empty'
 
 
     // ! Validación description
     if (!gameData.description) errors.description = 'The field cannot be empty'
-        
     else if (!regexNotSimbols.test(gameData.description)) errors.description = "The description can't contain simbols"
 
-    // ! Validación rating
-    if(!gameData.releaseDate) errors.releaseDate = 'The rating cannot be 0'
+
+    // ! Validación ReleaseDate
+    if(!gameData.releaseDate) errors.releaseDate = 'The release date cannot be empty'
+
+
+    // ! Validación Rating
+    if(!gameData.rating) errors.rating = 'The rating cannot be 0'
+
+
+    // ! Validación Platform
+    if(!gameData.platforms) errors.platforms = 'You must select at least one platform'
+
+
+    // ! Validación Genre
+    if(gameData.genre.length < 1) errors.genre = 'You must select at least one gender'
 
    return errors;
 }
