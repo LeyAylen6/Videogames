@@ -35,7 +35,6 @@ const Form = (props) => {
         if (!props.create) {
             let gameRestore = allGames.filter(game => game.id === id)
             let genresRestored = gameRestore[0].genres?.map(game => game.id)
-            console.log(gameRestore)
             
             setState({
                 ...state,

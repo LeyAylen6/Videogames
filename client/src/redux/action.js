@@ -74,7 +74,6 @@ export const postNewGame = async(game, dispatch) => {
         dispatch({ type: MESSAGE, payload: 'Successfully created!' })
 
     } catch(error) {
-        console.log(error.response)
         dispatch({ type: MESSAGE, payload: error?.response?.data || error })
     }
 }

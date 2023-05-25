@@ -97,9 +97,8 @@ export const rootReducer = (state = initialState, { type, payload }) => {
 
             case ORDER: 
 
-                let ordering 
+                let ordering
                 let actualPage = state.page
-                
 
                 switch(payload.order) {
                     
