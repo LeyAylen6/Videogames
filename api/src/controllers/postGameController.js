@@ -17,15 +17,15 @@ const postGame = async(name, description, platforms, image, releaseDate, rating,
         if (img[img.length - 1] === 'jpg' || img[img.length - 1] === 'png' || img[img.length - 1] === 'jpeg') {
             newGame.image = image
 
-        } else newGame.image = 'https://henry-videogames.up.railway.app/static/media/Logo.c40bc3667955bb1f94a8.png'
+        } else newGame.image = 'https://github.com/LeyAylen6/Videogames/blob/develop/client/src/assets/FotoDefaultGames.png?raw=true'
     }
 
     if (releaseDate) newGame.releaseDate = releaseDate
     if (rating) newGame.rating = rating
 
     const [game, create] = await Videogame.findOrCreate({
-        where: newGame,
-        default: newGame 
+        where: {name: newGame.name},
+        default: newGame
     })
 
     if (!create) throw new Error('El juego ya existe')

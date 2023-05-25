@@ -35,7 +35,6 @@ const Form = (props) => {
         if (!props.create) {
             let gameRestore = allGames.filter(game => game.id === id)
             let genresRestored = gameRestore[0].genres?.map(game => game.id)
-            console.log(gameRestore)
             
             setState({
                 ...state,
@@ -55,10 +54,7 @@ const Form = (props) => {
                 }
             }))
 
-        } else {
-            setState({...state, genre: []})
         }
-        
     }, [])
 
     // Controla valores de los input y errores
@@ -155,9 +151,9 @@ const Form = (props) => {
             <div className={styles.left}> 
                 <h1>{props.create ? '- Add a new game -' : '- Update game -' }</h1>
                 
-                {inputs?.map(input => {
+                {inputs?.map((input, index) => {
                     return (
-                        <div className={styles.inputContainer} key={input.id}>
+                        <div className={styles.inputContainer} key={index}>
                             
                             <label className={styles.label} htmlFor={input} >
                                 {input}

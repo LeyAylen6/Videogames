@@ -3,13 +3,20 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getGamesByName } from '../../redux/action';
 import search from './../../assets/search.svg'
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SearchBar = () => {
     const dispatch = useDispatch();
-    let [name, setName] = useState();
+    let [name, setName] = useState('');
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const onSearch = () => {
         getGamesByName(name, dispatch)
+        
+        if(location.pathname != '/home') {
+            navigate('/home')
+        }
     } 
 
     const onChange = (event) => {

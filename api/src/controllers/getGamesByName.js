@@ -23,12 +23,10 @@ const getGamesByName = async(name) => {
     
     const { data } = await axios(`${URL_BASE}/games?search=${name}&page_size=${15-savedGames}&key=${KEY}`)
 
-    if(data.length < 1) throw new Error('No existe un videojuego con el nombre solicitado')
-
-    // let object = data?.results?.map(game => objectConstructor(game))
-    console.log(data.results)
+    if(data.results.length < 1 && gamesFound.length < 1) throw new Error('No existe un videojuego con el nombre solicitado')
 
     return [...gamesFound, ...data.results].map(game => objectConstructor(game)); 
+    
     
     // ! Se envia el mismo objeto normalizado que en byId y en allGames
 }

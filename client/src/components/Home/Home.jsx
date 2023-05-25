@@ -60,6 +60,9 @@ const Home = () => {
         restoreAllGames(dispatch)
         setState({
             ...state,
+            ubication: 'Ubication',
+            order: 'OrderBy',
+            genres: 'Genres',
             allGames: true
         })
         clearGamesByName(dispatch)
