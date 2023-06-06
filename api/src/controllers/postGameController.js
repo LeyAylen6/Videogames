@@ -5,6 +5,7 @@ const { objectConstructor }= require('./../utils/objectConstructor')
 
 const postGame = async(name, description, platforms, image, releaseDate, rating, genres) => {
     
+    console.log(image)
     let newGame = {
         name: name,
         description: description,
@@ -13,10 +14,10 @@ const postGame = async(name, description, platforms, image, releaseDate, rating,
 
     if(image) {
         let img = image.split('.')
-        
-        if (img[img.length - 1] === 'jpg' || img[img.length - 1] === 'png' || img[img.length - 1] === 'jpeg') {
-            newGame.image = image
 
+        if (img[img.length - 1] == 'jpg' || img[img.length - 1] == 'png' || img[img.length - 1] == 'jpeg') {
+            newGame.image = image
+        
         } else newGame.image = 'https://github.com/LeyAylen6/Videogames/blob/develop/client/src/assets/FotoDefaultGames.png?raw=true'
     }
 
@@ -24,7 +25,7 @@ const postGame = async(name, description, platforms, image, releaseDate, rating,
     if (rating) newGame.rating = rating
 
     const [game, create] = await Videogame.findOrCreate({
-        where: {name: newGame.name},
+        where: newGame,
         default: newGame
     })
 
