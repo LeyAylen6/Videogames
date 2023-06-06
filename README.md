@@ -1,5 +1,4 @@
-# Henry Videogames![image](https://github.com/LeyAylen6/Videogames/assets/75590409/685e6d82-3216-4202-a992-53fe26e6abb7)
-
+# 🎮 Henry Videogames 🎮
 
 ## 📌 About this proyect
 
