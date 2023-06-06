@@ -12,7 +12,8 @@ This project is a single page application built with:
 This project needs a `.env` file inside the Server folder.
 
 File structure:
-- `URL_BASE='https://rickandmortyapi.com/api/character'`
+- `URL_BASE='https://api.rawg.io/api'`
+- `KEY`
 - `DB_USER`
 - `DB_PASSWORD`
 - `PORT`
@@ -22,6 +23,7 @@ File structure:
 - You have to create a database on your computer with a username and password. This values are `DB_USER` and `DB_PASSWORD`.
 - `PORT` will be the port where your server will be running.
 - `DB_HOST` will be the host where your Database will be running.
+- You can get an `API_KEY` at https://rawg.io/apidocs by clicking on "Get API key"
 
 📍 Then, you can run:
 
@@ -37,14 +39,8 @@ File structure:
 
 ## 📌 Sections of this project
 
-### ⚡️Login:
-- You can create a new account and login to an already created account
-<div align="center"> 
-    <img align="center" src='./assets/login.gif'></img>
-</div>
-
 ### ⚡️Landing:
-in the landing is the entrance to the page.
+- in the landing is the entrance to the page.
 <div align="center"> 
     <img align="center" src='./assets/landing.gif'></img>
 </div>
