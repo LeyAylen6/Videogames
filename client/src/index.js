@@ -9,7 +9,7 @@ import { store } from './redux/store';
 
 import axios from 'axios';
 
-axios.defaults.baseURL = 'videogames-production-d6df.up.railway.app'
+axios.defaults.baseURL = 'https://servidor-videogames-lf9k.onrender.com'
 
 const root = createRoot(document.getElementById('root'));
 
